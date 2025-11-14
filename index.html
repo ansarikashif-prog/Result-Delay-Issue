@@ -4,7 +4,6 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Report: 2nd Year Result Delay — JMI CDOE</title>
-<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <style>
   :root{
     --accent:#1a73e8;
@@ -19,21 +18,13 @@
     margin:0;
     font-family: "Segoe UI", Roboto, Arial, sans-serif;
     background: linear-gradient(180deg,var(--bgA), #f9fbff);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    min-height:100vh;
-    padding:20px;
-    color:#111;
+    display:flex;align-items:center;justify-content:center;
+    min-height:100vh;padding:20px;color:#111;
   }
 
   .container{
-    width:100%;
-    max-width:var(--maxWidth);
-    background:var(--card);
-    border-radius:14px;
-    padding:22px;
-    box-shadow:0 12px 36px rgba(11,38,78,0.08);
+    width:100%;max-width:var(--maxWidth);background:var(--card);
+    border-radius:14px;padding:22px;box-shadow:0 12px 36px rgba(11,38,78,0.08);
   }
 
   header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
@@ -56,37 +47,20 @@
 
   .preview-wrap{position:relative;margin-top:16px}
   .preview{
-    width:100%;
-    min-height:210px;
-    padding:18px;
-    border-radius:10px;
-    background:var(--preview);
-    border:1px solid #e7eef8;
-    font-size:15px;
-    line-height:1.6;
-    color:#1c1c1c;
-    white-space:pre-wrap;
-    overflow:auto;
-    transition:opacity .18s ease;
+    width:100%;min-height:210px;padding:18px;border-radius:10px;background:var(--preview);
+    border:1px solid #e7eef8;font-size:15px;line-height:1.6;color:#1c1c1c;
+    white-space:pre-wrap;overflow:auto;transition:opacity .18s ease;
   }
 
-  .rewrite{
-    position:absolute;
-    right:12px;
-    bottom:12px;
-    background:#fff;border:1px solid #d4d9e6;padding:6px 10px;border-radius:8px;cursor:pointer;
-    box-shadow:0 6px 18px rgba(11,38,78,0.06);font-weight:600
-  }
+  .rewrite{position:absolute;right:12px;bottom:12px;background:#fff;border:1px solid #d4d9e6;padding:6px 10px;border-radius:8px;cursor:pointer;box-shadow:0 6px 18px rgba(11,38,78,0.06);font-weight:600}
 
   .send-wrap{display:flex;justify-content:center;margin-top:18px}
   .send-btn{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:16px;cursor:pointer;box-shadow:0 12px 30px rgba(26,115,232,0.16)}
-  .send-btn:disabled{opacity:.6;cursor:default}
+  .send-btn[disabled]{opacity:.6;cursor:default}
 
   .status{margin-top:12px;text-align:center;color:var(--muted);font-size:14px}
-
   footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
 
-  /* RESPONSIVE TWEAKS */
   @media (max-width:720px){
     .row{flex-direction:column}
     .preview{min-height:260px}
@@ -99,7 +73,7 @@
     <header>
       <div>
         <h1 id="title">Report: 2nd Year Result Delay (BA ODL — 2023)</h1>
-        <div class="sub">Exams ended on <strong>24 August 2025</strong>. Use this form to send an individual request.</div>
+        <div class="sub">Exams ended on <strong>24 Aug 2025</strong>. Use this form to send an individual request.</div>
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <div class="badge" id="daysBadge">Days since exam: --</div>
@@ -147,11 +121,10 @@
   </div>
 
 <script type="module">
-  // Firebase v11 modules
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-  // ====== REPLACE this with your Firebase config ======
+  // ====== REPLACE with your Firebase config ======
   const firebaseConfig = {
     apiKey: "YOUR_API_KEY",
     authDomain: "YOUR_AUTHDOMAIN",
@@ -160,200 +133,199 @@
     messagingSenderId: "YOUR_MSG_SENDER",
     appId: "YOUR_APP_ID"
   };
-  // ====================================================
+  // =================================================
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const submissionsCol = collection(db, "submissions");
 
-  // ---------- Templates (10 English, 10 Hinglish - varied patterns) ----------
+  // ------------- TEMPLATES -------------
+  // All templates use "24 Aug 2025" in text and have one blank line between paragraphs.
   const templatesEnglish = [
 `Respected Sir,
 
-My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. I completed my second-year examinations on 24 August 2025. Since then, I have been waiting for the result but there has been no update.
+My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. I completed my second-year examinations on 24 Aug 2025, and I am writing because I have not received any update regarding the result.
 
-This delay creates uncertainty because I cannot confirm whether I have cleared all subjects or need to prepare for any back paper. Timely declaration helps students plan their studies and manage time for any re-attempts if required.
+This delay is causing uncertainty as I cannot confirm whether I have cleared all subjects or if any re-attempt will be required. Timely declaration would allow me to plan my studies and prepare properly if needed.
 
-I humbly request that the result be released at the earliest or that an expected date be shared so I can plan accordingly.
+I kindly request you to please announce the result soon or share an expected date for publication.
 
 Sincerely,
 [NAME]`,
 
 `Respected Sir,
 
-I am [NAME], Roll No [ROLL], Enrollment No [ENROLL]. My 2nd-year exams concluded on 24 August 2025. I have been regularly checking for the result update, but no information has been provided yet.
+I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. My last second-year exam was on 24 Aug 2025. I have been regularly checking the portal but there is no update about the result yet.
 
-The uncertainty is affecting my ability to plan for the upcoming academic period. If any paper requires a re-attempt, I will need adequate time to prepare. I kindly request you to announce the result soon or provide a tentative timeline.
+Without the result I cannot be sure of my academic status or whether I need to prepare for any back paper. I humbly request that the results be released as soon as possible or that an approximate timeline be provided.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Our second-year exams concluded on 24 Aug 2025. It has been some time and the results are still pending.
+
+The delay makes planning difficult, because if any subject requires re-attempt, adequate preparation time is needed. Kindly consider publishing the results soon or sharing an expected date.
 
 Regards,
 [NAME]`,
 
 `Respected Sir,
 
-This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Our second-year exams ended on 24 August 2025, and it has been some time without result publication.
+My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. I appeared for the second-year exams which finished on 24 Aug 2025, and I have not yet seen any result update.
 
-Without result confirmation, I cannot be certain about my academic standing. The delay has caused confusion and stress for planning further studies. Please provide an update or expected date of result declaration.
-
-Thank you,
-[NAME]`,
-
-`Respected Sir,
-
-I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. My last exam was on 24 Aug 2025; however, the result has not been declared yet. I am writing to request an update so I can know whether I have cleared my subjects.
-
-An early announcement will help me decide whether I need to prepare for any back papers and plan my schedule accordingly.
+Receiving the result will help me understand whether I need to allocate time for re-examination preparation. I request that the result be announced at the earliest convenience.
 
 Sincerely,
 [NAME]`,
 
 `Respected Sir,
 
-My name is [NAME], Roll No [ROLL], Enrolment [ENROLL]. I appeared for the second-year examinations which concluded on 24 August 2025. The result is still awaited and the delay is causing uncertainty.
+I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. I completed my second-year exams on 24 Aug 2025 and I am writing to ask for an update on the result declaration.
 
-Please consider releasing the result as early as possible or share a clear timeline for publication. Your prompt attention would be greatly appreciated.
+This delay is causing uncertainty and makes it hard to plan for the next academic steps. Please share the expected date for publication or release the results soon.
 
 Warm regards,
 [NAME]`,
 
 `Respected Sir,
 
-This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My second-year exams finished on 24 August 2025, and I am yet to receive any result information.
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My second-year exam schedule ended on 24 Aug 2025, and I have not received the result yet.
 
-Knowing the result will clarify whether further preparation is needed. I respectfully request an update or an expected announcement date at your convenience.
+Knowing the result is essential so that I can prepare if any reattempts are required. I kindly request an update or a tentative publication date.
 
 Thank you,
 [NAME]`,
 
 `Respected Sir,
 
-I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. Since the exams concluded on 24 August 2025, I have been waiting for the result announcement. The delay is making it hard to plan.
+My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. The second-year exams concluded on 24 Aug 2025; however, I have not received any information about the results.
 
-Please release the result or inform us when we can expect the declaration so students can prepare accordingly.
+The delay causes stress and uncertainty. I request you to please inform us about the expected date of declaration.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. Our second-year exams finished on 24 Aug 2025, yet the results remain unpublished.
+
+I would be grateful if you could provide an update or release the results soon so that I can plan accordingly.
 
 Regards,
 [NAME]`,
 
 `Respected Sir,
 
-My name is [NAME], Roll No [ROLL], Enrollment No [ENROLL]. Our second-year exams ended on 24 August 2025, and the result has not been published. This delay creates uncertainty about academic standing.
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My final second-year paper was on 24 Aug 2025, and I am still awaiting the result.
 
-I request you to kindly provide an update about the result release date so I can plan my next steps.
-
-Sincerely,
-[NAME]`,
-
-`Respected Sir,
-
-This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. I appeared for the second-year examinations and the last paper was on 24 August 2025. Even now the result has not been declared.
-
-I kindly request the result to be announced at the earliest or that a tentative date be provided for clarity.
+Please provide an update regarding the result announcement date or release the results at the earliest opportunity.
 
 Thank you,
 [NAME]`,
 
 `Respected Sir,
 
-My name is [NAME], Roll No [ROLL], Enrollment No [ENROLL]. The second-year exams were completed on 24 August 2025, and the results have not yet been published. The delay is making academic planning difficult.
+My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. The examinations ended on 24 Aug 2025 and results are still awaited. The delay is affecting my study planning.
 
-I humbly request you to consider releasing the results soon or sharing an expected announcement date.
+I request you to kindly announce the results or share a timeline for publication.
 
-Warm regards,
+Sincerely,
 [NAME]`
 ];
 
   const templatesHinglish = [
 `Respected Sir,
 
-My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. Hamare second-year exams 24 August 2025 ko khatam hue the, lekin abhi tak result declare nahi hua hai.
+My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. Hamare second-year exams 24 Aug 2025 ko khatam hue the, lekin ab tak result aane me der ho rahi hai.
 
-Result delay ki wajah se mujhe clarity nahi mil rahi ke sab subjects clear hue ya kisi me back required hai. Agar back hai to next preparation ke liye waqt chahiye hoga. Kindly request kar raha hoon ke result jald se jald announce kar diya jaye ya expected date bata di jaye.
+Result delay ki wajah se mujhe pata nahi chal raha ke main sab subjects clear hua hoon ya kisi me re-attempt chahiye. Kripya result jaldi publish karne ki koshish karein ya ek estimated date bata dein.
 
 Sincerely,
 [NAME]`,
 
 `Respected Sir,
 
-Main [NAME], Roll No [ROLL], Enrollment [ENROLL] hoon. 24 August 2025 ko second-year exams complete hue the. Ab tak result aane me der ho rahi hai.
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL] hoon. 24 Aug 2025 ko second-year exams complete hue the; abhi tak result declare nahi hua.
 
-Is delay ki wajah se planning aur preparations par asar pad raha hai. Aap se darkhwast hai ke kripya result announce karen ya ek tentative date provide karen.
+Is delay se planning aur tayyari par asar pad raha hai. Aap se request hai ke kripya expected result date batayein ya result jald announce karein.
 
 Regards,
 [NAME]`,
 
 `Respected Sir,
 
-Mera naam [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. Hamare second-year ke exams 24-08-2025 ko khatam hue the, par result abhi tak publish nahi hua.
+Mera naam [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. Hamare second-year ke exams 24 Aug 2025 ko khatam hue the par result abhi tak publish nahi hua.
 
-Result na milne se students ko pata nahi chalta ke kon sa subject clear hua ya nahi. Kripya is matter par dhyan dein aur result ki possible date inform karein.
+Result na milne ki wajah se clarity nahi mil rahi ke kya kisi subject me back hai. Please is mamle par dhyan dein aur result ka update share karein.
 
 Thank you,
 [NAME]`,
 
 `Respected Sir,
 
-Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 August 2025 ko hamare exams finish hue the lekin abhi tak result nahi aaya. Ye delay students ke liye tension create kar raha hai.
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko exams complete hue the aur abhi tak result nahi aaya. Ye uncertainty students ke liye tension create kar rahi hai.
 
-Meherbani karke result jaldi publish kar den ya ek expected date bata den, taaki hum aage ki planning kar saken.
+Aap se nivedan hai ke result jaldi publish kar den ya expected date provide karen.
 
 Sincerely,
 [NAME]`,
 
 `Respected Sir,
 
-Yeh [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24/08/2025 ke baad se result pending hai. Jab tak result nahi aata, mujhe pata nahi chalta ke mujhe kisi subject ki tayyari karni hai ya nahi.
+Yeh [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24/08/2025 ke baad se result pending hai; abhi tak koi update nahi mila.
 
-Aap se nivedan hai ke kripya result ka update share karen.
+Kripya result ki expected date batayein ya jald se jald declare kar den.
 
 Regards,
 [NAME]`,
 
 `Respected Sir,
 
-Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 August 2025 ko hamara last paper tha aur tab se result ka intezaar chal raha hai. Abhi tak koi update nahi aayi.
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare exams khatam hue the, par result announce nahi hua. Is se planning mushkil ho rahi hai.
 
-Kripya kindly result announce kar dein ya expected date bataen, taaki student apni planning theek se kar saken.
+Please result publish kar den ya expected date bata dein.
 
 Thanks,
 [NAME]`,
 
 `Respected Sir,
 
-Main [NAME], Roll No [ROLL] hoon. Hamare second-year ka exam 24 Aug 2025 ko khatm hua. Result pending hone se kaafi uncertainty hai.
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ka intezaar chal raha hai. Agar kisi subject me problem hai to timely update milna chahiye.
 
-Aap se request hai ke kindly result ko jald declare kar den.
+Aap se request hai ke kripya result ki information share karein.
 
 Sincerely,
 [NAME]`,
 
 `Respected Sir,
 
-Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko exams khatam hue the, aur ab tak result declare nahi hua. Ye delay pareshan kar raha hai.
+Mera naam [NAME], Roll No [ROLL] hai. Hamare second-year exams 24 Aug 2025 ko khatam hue the; abhi tak result pending hai. Ye delay pareshaani ka sabab ban raha hai.
 
-Kripya result jaldi announce karen ya ek tentative timeline bata den.
+Kindly result jaldi announce kar den.
 
 Regards,
 [NAME]`,
 
 `Respected Sir,
 
-Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24/08/2025 ke baad se result ka wait chal raha hai. Agar koi backlog hai to uski preparation ke liye time chahiye.
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko last exam tha; result abhi tak nahi aaya. Is delay ki wajah se students ka planning par farq pad raha hai.
 
-Please announce result soon or let us know expected date.
+Please notify or publish the result soon.
 
 Thank you,
 [NAME]`,
 
 `Respected Sir,
 
-Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL] hai. 2nd year exams 24 Aug 2025 ko khatam hue; ab tak result pending hai. Is delay se planning mushkil ho rahi hai.
-
-Meherbani karke result jaldi publish kar den.
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL] hai. 24 Aug 2025 ke baad se result pending hai aur abhi tak koi update nahi hai. Kripya is par dhyan dein aur result declare karen.
 
 Sincerely,
 [NAME]`
-];
+  ];
 
-  // ---------- STATE ----------
+  // ---------- STATE & DOM ----------
   const daysBadge = document.getElementById("daysBadge");
   const totalBadge = document.getElementById("totalBadge");
   const previewEl = document.getElementById("preview");
@@ -371,7 +343,7 @@ Sincerely,
   let currentIndex = null;
   let userEdited = false;
 
-  // days since exam
+  // update days since exam
   function updateDays(){
     const exam = new Date("2025-08-24T00:00:00Z");
     const now = new Date();
@@ -381,17 +353,14 @@ Sincerely,
   updateDays();
   setInterval(updateDays, 1000*60*60);
 
-  // total submissions -> realtime
+  // realtime total submissions
   onSnapshot(submissionsCol, snap => {
     totalBadge.textContent = `Total submissions: ${snap.size}`;
   });
 
-  // helper: pick non-repeating index
-  function pickIndex(arrLength){
-    let i = Math.floor(Math.random()*arrLength);
-    if(lastTwo.includes(i)){
-      i = (i+1) % arrLength;
-    }
+  function pickIndex(len){
+    let i = Math.floor(Math.random() * len);
+    if(lastTwo.includes(i)) i = (i + 1) % len;
     lastTwo.push(i);
     if(lastTwo.length > 2) lastTwo.shift();
     return i;
@@ -399,11 +368,11 @@ Sincerely,
 
   function fillTemplate(idx, lang, name, roll, enroll){
     const arr = lang === "en" ? templatesEnglish : templatesHinglish;
-    const t = arr[idx];
-    return t.replaceAll("[NAME]", name).replaceAll("[ROLL]", roll).replaceAll("[ENROLL]", enroll);
+    let t = arr[idx];
+    t = t.replaceAll("[NAME]", name).replaceAll("[ROLL]", roll).replaceAll("[ENROLL]", enroll);
+    return t;
   }
 
-  // generate preview automatically when fields present
   function autoPreview(){
     const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
     if(!name || !roll || !enroll){
@@ -411,17 +380,18 @@ Sincerely,
       return;
     }
     if(userEdited) return;
-    currentIndex = pickIndex(templatesEnglish.length);
+    const arrLen = templatesEnglish.length;
+    currentIndex = pickIndex(arrLen);
     previewEl.textContent = fillTemplate(currentIndex, currentLang, name, roll, enroll);
   }
 
   nameEl.addEventListener("input", ()=>{ userEdited = false; autoPreview(); });
   rollEl.addEventListener("input", ()=>{ userEdited = false; autoPreview(); });
   enrollEl.addEventListener("input", ()=>{ userEdited = false; autoPreview(); });
-  previewEl.addEventListener("input", ()=> { userEdited = true; });
+  previewEl.addEventListener("input", ()=>{ userEdited = true; });
 
   // language toggle
-  btnEng.addEventListener("click", ()=> {
+  btnEng.addEventListener("click", ()=>{
     currentLang = "en";
     btnEng.classList.add("active"); btnEng.setAttribute("aria-pressed","true");
     btnHin.classList.remove("active"); btnHin.setAttribute("aria-pressed","false");
@@ -431,7 +401,7 @@ Sincerely,
       userEdited = false;
     }
   });
-  btnHin.addEventListener("click", ()=> {
+  btnHin.addEventListener("click", ()=>{
     currentLang = "hi";
     btnHin.classList.add("active"); btnHin.setAttribute("aria-pressed","true");
     btnEng.classList.remove("active"); btnEng.setAttribute("aria-pressed","false");
@@ -442,7 +412,7 @@ Sincerely,
     }
   });
 
-  // rewrite -> new random template
+  // rewrite
   rewriteBtn.addEventListener("click", ()=>{
     const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
     if(!name || !roll || !enroll){ alert("Please fill Name, Roll No and Enrollment No first."); return; }
@@ -455,48 +425,57 @@ Sincerely,
     },160);
   });
 
-  // ---------- SEND FLOW: open Gmail first, then save to Firestore ----------
+  // SEND: save to Firestore first, then open mailto (reliable across devices)
   sendBtn.addEventListener("click", async ()=>{
     const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
     if(!name || !roll || !enroll){ alert("Please fill Name, Roll No and Enrollment No first."); return; }
 
-    const bodyText = (previewEl.textContent && previewEl.textContent.trim().length>0) ? previewEl.textContent.trim() : fillTemplate(currentIndex ?? 0, currentLang, name, roll, enroll);
-    const subject = encodeURIComponent("Request for Early Declaration of Result – BA ODL 2023 Batch");
-    const bodyEnc = encodeURIComponent(bodyText);
+    sendBtn.disabled = true;
+    statusEl.textContent = "Saving your submission...";
 
-    // Build Gmail compose URL: To -> Gaffar; BCC -> mrizvi (as requested)
-    const to = "g.mgaffar@jmi.ac.in";
-    const bcc = "mrizvi@jmi.ac.in";
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&bcc=${encodeURIComponent(bcc)}&su=${subject}&body=${bodyEnc}`;
+    // prepare body with one-blank-line paragraphs (\n\n)
+    const bodyText = (previewEl.textContent && previewEl.textContent.trim().length>0) ?
+                    previewEl.textContent.trim() :
+                    fillTemplate(currentIndex ?? 0, currentLang, name, roll, enroll);
 
-    // Open Gmail first so popup is allowed by browser
-    const win = window.open(gmailUrl, "_blank");
-    if(!win){
-      alert("Popup blocked. Please allow popups for this site and try again.");
-      return;
-    }
-
-    // Immediately save a record to Firestore (Option A)
-    statusEl.textContent = "Recording your submission...";
+    // Subject decided earlier by you
+    const subjectText = "Regarding Pending Declaration of Second-Year Result (BA 2023 Batch)";
 
     try{
+      // Save to Firestore
       await addDoc(submissionsCol, {
-        name, roll, enrollment: enroll,
-        lang: currentLang,
-        templateIndex: currentIndex ?? 0,
-        mailBody: bodyText,
-        submittedAt: new Date().toISOString(),
+        name, roll, enrollment: enroll, lang: currentLang,
+        templateIndex: currentIndex ?? 0, mailBody: bodyText,
+        readableTime: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
         ts: serverTimestamp()
       });
-      statusEl.textContent = "Saved locally. Gmail opened — review & send.";
-      // update total count appears through onSnapshot automatically
+
+      statusEl.textContent = "Saved. Opening your mail app...";
+
+      // Build mailto (one blank line between paragraphs -> \n\n)
+      // encodeURIComponent will encode line breaks as %0A
+      const to = "g.mgaffar@jmi.ac.in";
+      const bcc = "mrizvi@jmi.ac.in";
+      const subjectEnc = encodeURIComponent(subjectText);
+      const bodyEnc = encodeURIComponent(bodyText); // retains \n\n as %0A%0A
+
+      const mailto = `mailto:${to}?bcc=${bcc}&subject=${subjectEnc}&body=${bodyEnc}`;
+
+      // Open device mail app
+      window.location.href = mailto;
+
+      // small delay to allow navigation (page may unload)
+      setTimeout(()=>{ sendBtn.disabled = false; }, 2000);
+
     } catch (err){
       console.error("Save error:", err);
-      statusEl.textContent = "Could not save submission — please try again.";
+      alert("Could not save submission. Please try again.");
+      statusEl.textContent = "Error saving submission.";
+      sendBtn.disabled = false;
     }
   });
 
-  // initial preview hint
+  // initial preview placeholder
   previewEl.textContent = "Please enter Name, Roll No and Enrollment No to generate an email preview.";
 </script>
 </body>

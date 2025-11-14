@@ -3,395 +3,501 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Report Result Delay | JMI CDOE</title>
-
+<title>Report: 2nd Year Result Delay — JMI CDOE</title>
+<link rel="icon" href="data:;base64,iVBORw0KGgo=">
 <style>
-:root{
-  --accent:#1a73e8;
-  --muted:#666;
-  --card-bg:#ffffff;
-  --preview-bg:#fafafa;
-}
+  :root{
+    --accent:#1a73e8;
+    --muted:#6b7280;
+    --bgA:#eef3f8;
+    --card:#fff;
+    --preview:#fbfdff;
+    --maxWidth:980px;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    background: linear-gradient(180deg,var(--bgA), #f9fbff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100vh;
+    padding:20px;
+    color:#111;
+  }
 
-/* GLOBAL */
-body{
-  margin:0;
-  font-family:"Segoe UI", Arial, sans-serif;
-  background:#eef3f8;
-  display:flex;
-  justify-content:center;
-  padding:30px;
-}
+  .container{
+    width:100%;
+    max-width:var(--maxWidth);
+    background:var(--card);
+    border-radius:14px;
+    padding:22px;
+    box-shadow:0 12px 36px rgba(11,38,78,0.08);
+  }
 
-/* CARD */
-.card{
-  background:var(--card-bg);
-  width:100%;
-  max-width:760px;
-  padding:26px;
-  border-radius:14px;
-  box-shadow:0 8px 26px rgba(0,0,0,0.12);
-}
+  header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  h1{margin:0;font-size:1.5rem;color:#0b3a91}
+  .sub{color:var(--muted);font-size:14px}
 
-/* HEADINGS */
-h1{
-  margin:0 0 15px;
-  font-size:1.6rem;
-  text-align:center;
-  color:#0b3a91;
-}
+  .row{display:flex;gap:12px;margin-top:14px;flex-wrap:wrap}
+  .col{flex:1;min-width:220px}
+  label{display:block;margin-bottom:6px;font-weight:700;font-size:13px;color:#222}
+  input[type=text]{width:100%;padding:10px 12px;border-radius:8px;border:1px solid #d6dbe6;font-size:15px;background:#fff}
+  input[type=text]:focus{outline:none;box-shadow:0 0 0 5px rgba(26,115,232,0.06);border-color:var(--accent)}
 
-/* LABEL + FIELDS */
-label{
-  font-weight:600;
-  display:block;
-  margin-bottom:4px;
-}
-input{
-  width:100%;
-  padding:12px 14px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  font-size:15px;
-}
-input:focus{
-  outline:none;
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(26,115,232,0.15);
-}
+  .controls{display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap}
+  .toggle{display:inline-flex;border-radius:10px;overflow:hidden;border:1px solid #d6dbe6;background:#fff}
+  .toggle button{padding:8px 14px;border:none;background:transparent;cursor:pointer;font-weight:600}
+  .toggle button.active{background:var(--accent);color:#fff}
+  .badge{padding:8px 12px;border-radius:999px;background:#fff;border:1px solid #e6eefc;color:#0b4ea2;font-weight:700}
 
-/* TOGGLE */
-.toggle-box{
-  margin-top:18px;
-  display:flex;
-  gap:10px;
-  align-items:center;
-  font-size:15px;
-}
-.toggle-box button{
-  padding:6px 14px;
-  border-radius:8px;
-  border:1px solid #ccc;
-  background:#fff;
-  cursor:pointer;
-}
-.toggle-box button.active{
-  background:var(--accent);
-  color:#fff;
-  border-color:var(--accent);
-}
+  .info{margin-top:12px;padding:10px 12px;border-radius:8px;background:#f4f8ff;border:1px solid #e5efff;color:#0b3a91;font-size:13px}
 
-/* COUNTERS */
-.counters{
-  margin-top:14px;
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  color:#444;
-}
+  .preview-wrap{position:relative;margin-top:16px}
+  .preview{
+    width:100%;
+    min-height:210px;
+    padding:18px;
+    border-radius:10px;
+    background:var(--preview);
+    border:1px solid #e7eef8;
+    font-size:15px;
+    line-height:1.6;
+    color:#1c1c1c;
+    white-space:pre-wrap;
+    overflow:auto;
+    transition:opacity .18s ease;
+  }
 
-/* PREVIEW */
-.preview-wrap{
-  position:relative;
-  margin-top:16px;
-}
-.preview{
-  width:100%;
-  min-height:200px;
-  padding:20px;
-  border-radius:10px;
-  background:var(--preview-bg);
-  border:1px solid #ddd;
-  white-space:pre-wrap;
-  font-size:15px;
-  line-height:1.55;
-  overflow:auto;
-}
-/* Rewrite Button */
-.rewrite-btn{
-  position:absolute;
-  bottom:12px;
-  right:12px;
-  background:#fff;
-  border:1px solid #ccc;
-  border-radius:8px;
-  padding:6px 10px;
-  font-size:13px;
-  cursor:pointer;
-}
+  .rewrite{
+    position:absolute;
+    right:12px;
+    bottom:12px;
+    background:#fff;border:1px solid #d4d9e6;padding:6px 10px;border-radius:8px;cursor:pointer;
+    box-shadow:0 6px 18px rgba(11,38,78,0.06);font-weight:600
+  }
 
-/* SEND BUTTON */
-.send-btn{
-  margin-top:18px;
-  display:block;
-  width:100%;
-  background:var(--accent);
-  color:#fff;
-  border:none;
-  padding:14px;
-  border-radius:10px;
-  font-size:16px;
-  cursor:pointer;
-  box-shadow:0 5px 16px rgba(26,115,232,0.26);
-}
-.send-btn:hover{
-  background:#0a61d1;
-}
+  .send-wrap{display:flex;justify-content:center;margin-top:18px}
+  .send-btn{background:var(--accent);color:#fff;border:none;padding:12px 28px;border-radius:10px;font-size:16px;cursor:pointer;box-shadow:0 12px 30px rgba(26,115,232,0.16)}
+  .send-btn:disabled{opacity:.6;cursor:default}
 
-/* FOOTER NOTE */
-.footer{
-  text-align:center;
-  margin-top:16px;
-  color:var(--muted);
-  font-size:13px;
-}
-.info-badge{
-  background:#e8f0fe;
-  padding:8px 10px;
-  border-radius:6px;
-  width:fit-content;
-  margin:14px auto;
-  color:#0b3a91;
-  font-size:13px;
-  border:1px solid #c7d8f5;
-}
+  .status{margin-top:12px;text-align:center;color:var(--muted);font-size:14px}
+
+  footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
+
+  /* RESPONSIVE TWEAKS */
+  @media (max-width:720px){
+    .row{flex-direction:column}
+    .preview{min-height:260px}
+    .send-btn{width:100%}
+  }
 </style>
 </head>
-
 <body>
-<div class="card">
+  <div class="container" role="main" aria-labelledby="title">
+    <header>
+      <div>
+        <h1 id="title">Report: 2nd Year Result Delay (BA ODL — 2023)</h1>
+        <div class="sub">Exams ended on <strong>24 August 2025</strong>. Use this form to send an individual request.</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <div class="badge" id="daysBadge">Days since exam: --</div>
+        <div class="badge" id="totalBadge">Total submissions: 0</div>
+      </div>
+    </header>
 
-<h1>Report: Result Delay Issue (2nd Year – BA ODL)</h1>
+    <div class="row" style="margin-top:16px">
+      <div class="col">
+        <label for="name">Your Name *</label>
+        <input id="name" type="text" placeholder="e.g. Zaid Khan" autocomplete="name">
+      </div>
+      <div class="col">
+        <label for="roll">Roll Number *</label>
+        <input id="roll" type="text" placeholder="e.g. D23BA0000">
+      </div>
+      <div class="col">
+        <label for="enroll">Enrollment No *</label>
+        <input id="enroll" type="text" placeholder="e.g. 12-3456">
+      </div>
+    </div>
 
-<!-- INPUTS -->
-<label>Name *</label>
-<input id="name" type="text" placeholder="e.g. Zaid" />
+    <div class="controls">
+      <div class="toggle" role="tablist" aria-label="Language">
+        <button id="btnEng" class="active" aria-pressed="true">English</button>
+        <button id="btnHin" aria-pressed="false">Hinglish</button>
+      </div>
+      <div style="flex:1"></div>
+      <div class="info">Why this matters: delayed result causes uncertainty, reduces time for back exams, and affects planning.</div>
+    </div>
 
-<label style="margin-top:12px">Roll Number *</label>
-<input id="roll" type="text" placeholder="e.g. D23BA0000" />
+    <div class="preview-wrap">
+      <div id="preview" class="preview" contenteditable="true" aria-label="Email preview">
+        Please enter Name, Roll No and Enrollment No to generate an individual email preview.
+      </div>
+      <button id="rewrite" class="rewrite" title="Get a different wording">↻ Rewrite</button>
+    </div>
 
-<label style="margin-top:12px">Enrollment Number *</label>
-<input id="enroll" type="text" placeholder="e.g. 12-3456" />
+    <div class="send-wrap">
+      <button id="send" class="send-btn">Send My Concern</button>
+    </div>
 
-<!-- LANGUAGE TOGGLE -->
-<div class="toggle-box">
-  <span>Mail Language:</span>
-  <button id="engBtn" class="active">English</button>
-  <button id="hinBtn">Hinglish</button>
-</div>
+    <div id="status" class="status"></div>
+    <footer>This tool is created to assist students in raising academic concerns.</footer>
+  </div>
 
-<!-- COUNTERS -->
-<div class="counters">
-  <div>⏳ Days Since Exam: <b id="daysCount">0</b></div>
-  <div>📨 Total Students Sent: <b id="totalSent">0</b></div>
-</div>
-
-<div class="info-badge">
-  Why this matters?  
-  → Students remain unsure about pass/fail, preparation time for back-exams decreases,  
-     and academic planning becomes uncertain.
-</div>
-
-<!-- PREVIEW -->
-<div class="preview-wrap">
-  <div id="preview" class="preview"></div>
-  <button id="rewriteBtn" class="rewrite-btn">↻ Rewrite</button>
-</div>
-
-<button class="send-btn" id="sendBtn">Send My Concern</button>
-
-<div class="footer">This system is only for assisting students.</div>
-
-</div>
-
-<!-- FIREBASE -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+  // Firebase v11 modules
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "YOUR",
-  authDomain: "YOUR",
-  projectId: "YOUR",
-  storageBucket: "YOUR",
-  messagingSenderId: "YOUR",
-  appId: "YOUR"
-};
+  // ====== REPLACE this with your Firebase config ======
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTHDOMAIN",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MSG_SENDER",
+    appId: "YOUR_APP_ID"
+  };
+  // ====================================================
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  const submissionsCol = collection(db, "submissions");
 
-/* ---------- TEMPLATE LISTS ---------- */
-const englishTemplates = [
+  // ---------- Templates (10 English, 10 Hinglish - varied patterns) ----------
+  const templatesEnglish = [
 `Respected Sir,
 
-My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. I am a BA (ODL) 2023 batch student. Our second-year exams were completed on 24 August 2025, and it has now been a long time, yet the result has still not been declared.
+My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. I completed my second-year examinations on 24 August 2025. Since then, I have been waiting for the result but there has been no update.
 
-The delay in the result is creating uncertainty—students do not know whether they passed all subjects, or if any back-paper preparation is required for the next cycle. The longer the delay, the more difficult it becomes to plan the upcoming year academically.
+This delay creates uncertainty because I cannot confirm whether I have cleared all subjects or need to prepare for any back paper. Timely declaration helps students plan their studies and manage time for any re-attempts if required.
 
-I kindly request you to please look into this matter and update when we can expect the results to be announced.
+I humbly request that the result be released at the earliest or that an expected date be shared so I can plan accordingly.
 
 Sincerely,
 [NAME]`,
 
 `Respected Sir,
 
-This is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL], from BA ODL 2023 batch. Our second-year examinations ended on 24 August 2025. However, the results have still not been published, which is causing confusion for students who are waiting to know their academic status.
+I am [NAME], Roll No [ROLL], Enrollment No [ENROLL]. My 2nd-year exams concluded on 24 August 2025. I have been regularly checking for the result update, but no information has been provided yet.
 
-Without knowing whether we passed or have any backlog, it becomes difficult to mentally prepare or plan for the next academic step. I request you to kindly provide an update regarding the expected result date.
+The uncertainty is affecting my ability to plan for the upcoming academic period. If any paper requires a re-attempt, I will need adequate time to prepare. I kindly request you to announce the result soon or provide a tentative timeline.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Our second-year exams ended on 24 August 2025, and it has been some time without result publication.
+
+Without result confirmation, I cannot be certain about my academic standing. The delay has caused confusion and stress for planning further studies. Please provide an update or expected date of result declaration.
 
 Thank you,
 [NAME]`,
 
 `Respected Sir,
 
-My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL], BA ODL 2023 batch. It has been a significant amount of time since our second-year exams concluded on 24 August 2025, but the result has not been released yet.
+I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. My last exam was on 24 Aug 2025; however, the result has not been declared yet. I am writing to request an update so I can know whether I have cleared my subjects.
 
-We understand that processes may take time, but students are left in uncertainty. Knowing our result is essential for planning ahead and preparing for any potential back paper if required.
+An early announcement will help me decide whether I need to prepare for any back papers and plan my schedule accordingly.
 
-I humbly request you to kindly look into the delay and provide clarity regarding the result announcement.
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+My name is [NAME], Roll No [ROLL], Enrolment [ENROLL]. I appeared for the second-year examinations which concluded on 24 August 2025. The result is still awaited and the delay is causing uncertainty.
+
+Please consider releasing the result as early as possible or share a clear timeline for publication. Your prompt attention would be greatly appreciated.
+
+Warm regards,
+[NAME]`,
+
+`Respected Sir,
+
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My second-year exams finished on 24 August 2025, and I am yet to receive any result information.
+
+Knowing the result will clarify whether further preparation is needed. I respectfully request an update or an expected announcement date at your convenience.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. Since the exams concluded on 24 August 2025, I have been waiting for the result announcement. The delay is making it hard to plan.
+
+Please release the result or inform us when we can expect the declaration so students can prepare accordingly.
 
 Regards,
 [NAME]`,
 
 `Respected Sir,
 
-I hope you are well. I am [NAME], Roll No. [ROLL], Enrollment No. [ENROLL], from BA ODL (2023 batch). Our second-year exams ended on 24 August 2025, but the results are still pending.
+My name is [NAME], Roll No [ROLL], Enrollment No [ENROLL]. Our second-year exams ended on 24 August 2025, and the result has not been published. This delay creates uncertainty about academic standing.
 
-This delay affects students’ confidence and preparation, especially if someone has unknowingly received a back in any subject. Students simply wish to know their standing so they can plan the next steps properly.
+I request you to kindly provide an update about the result release date so I can plan my next steps.
 
-Please consider providing an update regarding the expected result release.
-
-Respectfully,
+Sincerely,
 [NAME]`,
 
 `Respected Sir,
 
-My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL], student of BA ODL (2023 batch). Our second-year exams were completed on 24 August 2025. However, the result has not been declared yet, and the uncertainty is causing concern among students.
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. I appeared for the second-year examinations and the last paper was on 24 August 2025. Even now the result has not been declared.
 
-An early update would help us understand our academic progress and prepare for the next year without unnecessary stress.
+I kindly request the result to be announced at the earliest or that a tentative date be provided for clarity.
 
-Humbly requesting your kind attention on this matter.
+Thank you,
+[NAME]`,
 
-Regards,
+`Respected Sir,
+
+My name is [NAME], Roll No [ROLL], Enrollment No [ENROLL]. The second-year exams were completed on 24 August 2025, and the results have not yet been published. The delay is making academic planning difficult.
+
+I humbly request you to consider releasing the results soon or sharing an expected announcement date.
+
+Warm regards,
 [NAME]`
 ];
 
-const hinglishTemplates = [
+  const templatesHinglish = [
 `Respected Sir,
 
-My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. BA ODL (2023 batch) ke second-year exams 24 August 2025 ko khatam ho gaye the, lekin result abhi tak announce nahi hua hai.
+My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. Hamare second-year exams 24 August 2025 ko khatam hue the, lekin abhi tak result declare nahi hua hai.
 
-Students ko bilkul clarity nahi mil pa rahi ke pass hue hain ya kisi subject me back aayi hai. Agar back-paper hua to uski tayyari ke liye time kam bachta hai, isi wajah se result delay students ke liye tension ka sabab ban raha hai.
+Result delay ki wajah se mujhe clarity nahi mil rahi ke sab subjects clear hue ya kisi me back required hai. Agar back hai to next preparation ke liye waqt chahiye hoga. Kindly request kar raha hoon ke result jald se jald announce kar diya jaye ya expected date bata di jaye.
 
-Kindly request hai ke is par dhyaan diya jaye aur result ke expected date ka update share kiya jaye.
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL] hoon. 24 August 2025 ko second-year exams complete hue the. Ab tak result aane me der ho rahi hai.
+
+Is delay ki wajah se planning aur preparations par asar pad raha hai. Aap se darkhwast hai ke kripya result announce karen ya ek tentative date provide karen.
 
 Regards,
 [NAME]`,
 
 `Respected Sir,
 
-Main [NAME], Roll No. [ROLL], Enrollment No. [ENROLL], BA ODL 2023 batch se hoon. Hamare second-year exams 24 August 2025 ko complete hue the, par abhi tak result declare nahi hua hai.
+Mera naam [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. Hamare second-year ke exams 24-08-2025 ko khatam hue the, par result abhi tak publish nahi hua.
 
-Result delay hone ki wajah se students ko pata hi nahi chal pa raha ke wo pass hua hain ya nahi. Back lagne ki situation me next cycle ke liye tayyari karna mushkil ho jata hai.
+Result na milne se students ko pata nahi chalta ke kon sa subject clear hua ya nahi. Kripya is matter par dhyan dein aur result ki possible date inform karein.
 
-Request hai ke kindly is issue ko dekh kar result ki update provide karein.
-
-Shukriya,
+Thank you,
 [NAME]`,
 
 `Respected Sir,
 
-My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. BA ODL (2023 batch) second-year exam ka last paper 24 August 2025 ko tha. Kaafi waqt ho chuka hai, par result abhi tak nahi aaya.
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 August 2025 ko hamare exams finish hue the lekin abhi tak result nahi aaya. Ye delay students ke liye tension create kar raha hai.
 
-Students abhi uncertainty me hain—kis subject me pass hain, kis me nahi, kuch pata nahi. Next year planning bhi result ke bina mushkil ho jati hai.
+Meherbani karke result jaldi publish kar den ya ek expected date bata den, taaki hum aage ki planning kar saken.
 
-Humble request hai ke result kab tak expect kar sakte hain uska update diya jaye.
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+Yeh [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24/08/2025 ke baad se result pending hai. Jab tak result nahi aata, mujhe pata nahi chalta ke mujhe kisi subject ki tayyari karni hai ya nahi.
+
+Aap se nivedan hai ke kripya result ka update share karen.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 August 2025 ko hamara last paper tha aur tab se result ka intezaar chal raha hai. Abhi tak koi update nahi aayi.
+
+Kripya kindly result announce kar dein ya expected date bataen, taaki student apni planning theek se kar saken.
+
+Thanks,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL] hoon. Hamare second-year ka exam 24 Aug 2025 ko khatm hua. Result pending hone se kaafi uncertainty hai.
+
+Aap se request hai ke kindly result ko jald declare kar den.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko exams khatam hue the, aur ab tak result declare nahi hua. Ye delay pareshan kar raha hai.
+
+Kripya result jaldi announce karen ya ek tentative timeline bata den.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24/08/2025 ke baad se result ka wait chal raha hai. Agar koi backlog hai to uski preparation ke liye time chahiye.
+
+Please announce result soon or let us know expected date.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL] hai. 2nd year exams 24 Aug 2025 ko khatam hue; ab tak result pending hai. Is delay se planning mushkil ho rahi hai.
+
+Meherbani karke result jaldi publish kar den.
 
 Sincerely,
 [NAME]`
 ];
 
-/* AUTO DAYS COUNTER */
-const examDate = new Date("2025-08-24");
-document.getElementById("daysCount").textContent =
-  Math.floor((new Date() - examDate) / (1000*60*60*24));
+  // ---------- STATE ----------
+  const daysBadge = document.getElementById("daysBadge");
+  const totalBadge = document.getElementById("totalBadge");
+  const previewEl = document.getElementById("preview");
+  const nameEl = document.getElementById("name");
+  const rollEl = document.getElementById("roll");
+  const enrollEl = document.getElementById("enroll");
+  const btnEng = document.getElementById("btnEng");
+  const btnHin = document.getElementById("btnHin");
+  const rewriteBtn = document.getElementById("rewrite");
+  const sendBtn = document.getElementById("send");
+  const statusEl = document.getElementById("status");
 
-/* DOM REFS */
-const nameInput = document.getElementById("name");
-const rollInput = document.getElementById("roll");
-const enrollInput = document.getElementById("enroll");
-const preview = document.getElementById("preview");
-const rewriteBtn = document.getElementById("rewriteBtn");
-const engBtn = document.getElementById("engBtn");
-const hinBtn = document.getElementById("hinBtn");
-const sendBtn = document.getElementById("sendBtn");
-let lang = "eng";
+  let currentLang = "en";
+  let lastTwo = [];
+  let currentIndex = null;
+  let userEdited = false;
 
-/* RENDER PREVIEW */
-function buildPreview(){
-  const name = nameInput.value.trim();
-  const roll = rollInput.value.trim();
-  const enroll = enrollInput.value.trim();
-  if(!name || !roll || !enroll){
-    preview.textContent = "Please fill all details to generate preview.";
-    return;
+  // days since exam
+  function updateDays(){
+    const exam = new Date("2025-08-24T00:00:00Z");
+    const now = new Date();
+    const diff = Math.floor((now - exam) / (1000*60*60*24));
+    daysBadge.textContent = `Days since exam: ${diff >= 0 ? diff : 0}`;
   }
-  const arr = lang==="eng" ? englishTemplates : hinglishTemplates;
-  const temp = arr[Math.floor(Math.random()*arr.length)];
-  preview.textContent = temp
-    .replaceAll("[NAME]", name)
-    .replaceAll("[ROLL]", roll)
-    .replaceAll("[ENROLL]", enroll);
-}
-[nameInput,rollInput,enrollInput].forEach(i=>i.addEventListener("input",buildPreview));
+  updateDays();
+  setInterval(updateDays, 1000*60*60);
 
-/* LANGUAGE SWITCH */
-engBtn.onclick = ()=>{ lang="eng"; engBtn.classList.add("active"); hinBtn.classList.remove("active"); buildPreview(); };
-hinBtn.onclick = ()=>{ lang="hin"; hinBtn.classList.add("active"); engBtn.classList.remove("active"); buildPreview(); };
-
-/* REWRITE BUTTON */
-rewriteBtn.onclick = ()=>buildPreview();
-
-/* COUNT TOTAL SENT */
-async function updateTotalCounter(){
-  const snap = await getDocs(collection(db,"submissions"));
-  document.getElementById("totalSent").textContent = snap.size;
-}
-updateTotalCounter();
-
-/* SEND EMAIL + SAVE TO FIRESTORE */
-sendBtn.onclick = async()=>{
-  const name = nameInput.value.trim();
-  const roll = rollInput.value.trim();
-  const enroll = enrollInput.value.trim();
-  const body = preview.textContent.trim();
-
-  if(!name || !roll || !enroll || !body){
-    alert("Please fill all details.");
-    return;
-  }
-
-  await addDoc(collection(db,"submissions"),{
-    name, roll, enroll,
-    lang,
-    mailBody: body,
-    submittedAt: new Date().toISOString()
+  // total submissions -> realtime
+  onSnapshot(submissionsCol, snap => {
+    totalBadge.textContent = `Total submissions: ${snap.size}`;
   });
 
-  updateTotalCounter();
+  // helper: pick non-repeating index
+  function pickIndex(arrLength){
+    let i = Math.floor(Math.random()*arrLength);
+    if(lastTwo.includes(i)){
+      i = (i+1) % arrLength;
+    }
+    lastTwo.push(i);
+    if(lastTwo.length > 2) lastTwo.shift();
+    return i;
+  }
 
-  const subject = encodeURIComponent("Request for Result Announcement – BA ODL (2023 Batch)");
-  const encodedBody = encodeURIComponent(body);
+  function fillTemplate(idx, lang, name, roll, enroll){
+    const arr = lang === "en" ? templatesEnglish : templatesHinglish;
+    const t = arr[idx];
+    return t.replaceAll("[NAME]", name).replaceAll("[ROLL]", roll).replaceAll("[ENROLL]", enroll);
+  }
 
-  const url =
-   `https://mail.google.com/mail/?view=cm&fs=1`+
-   `&to=g.mgaffar@jmi.ac.in,mrizvi@jmi.ac.in`+
-   `&bcc=${encodeURIComponent("yourbcc@example.com")}`+
-   `&su=${subject}&body=${encodedBody}`;
+  // generate preview automatically when fields present
+  function autoPreview(){
+    const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+    if(!name || !roll || !enroll){
+      if(!userEdited) previewEl.textContent = "Please enter Name, Roll No and Enrollment No to generate an email preview.";
+      return;
+    }
+    if(userEdited) return;
+    currentIndex = pickIndex(templatesEnglish.length);
+    previewEl.textContent = fillTemplate(currentIndex, currentLang, name, roll, enroll);
+  }
 
-  window.open(url,'_blank');
-};
+  nameEl.addEventListener("input", ()=>{ userEdited = false; autoPreview(); });
+  rollEl.addEventListener("input", ()=>{ userEdited = false; autoPreview(); });
+  enrollEl.addEventListener("input", ()=>{ userEdited = false; autoPreview(); });
+  previewEl.addEventListener("input", ()=> { userEdited = true; });
+
+  // language toggle
+  btnEng.addEventListener("click", ()=> {
+    currentLang = "en";
+    btnEng.classList.add("active"); btnEng.setAttribute("aria-pressed","true");
+    btnHin.classList.remove("active"); btnHin.setAttribute("aria-pressed","false");
+    const name = nameEl.value.trim(), r = rollEl.value.trim(), e = enrollEl.value.trim();
+    if(name && r && e){
+      previewEl.textContent = fillTemplate(currentIndex ?? pickIndex(templatesEnglish.length), currentLang, name, r, e);
+      userEdited = false;
+    }
+  });
+  btnHin.addEventListener("click", ()=> {
+    currentLang = "hi";
+    btnHin.classList.add("active"); btnHin.setAttribute("aria-pressed","true");
+    btnEng.classList.remove("active"); btnEng.setAttribute("aria-pressed","false");
+    const name = nameEl.value.trim(), r = rollEl.value.trim(), e = enrollEl.value.trim();
+    if(name && r && e){
+      previewEl.textContent = fillTemplate(currentIndex ?? pickIndex(templatesEnglish.length), currentLang, name, r, e);
+      userEdited = false;
+    }
+  });
+
+  // rewrite -> new random template
+  rewriteBtn.addEventListener("click", ()=>{
+    const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+    if(!name || !roll || !enroll){ alert("Please fill Name, Roll No and Enrollment No first."); return; }
+    previewEl.style.opacity = "0.25";
+    setTimeout(()=>{
+      currentIndex = pickIndex(templatesEnglish.length);
+      previewEl.textContent = fillTemplate(currentIndex, currentLang, name, roll, enroll);
+      userEdited = false;
+      previewEl.style.opacity = "1";
+    },160);
+  });
+
+  // ---------- SEND FLOW: open Gmail first, then save to Firestore ----------
+  sendBtn.addEventListener("click", async ()=>{
+    const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+    if(!name || !roll || !enroll){ alert("Please fill Name, Roll No and Enrollment No first."); return; }
+
+    const bodyText = (previewEl.textContent && previewEl.textContent.trim().length>0) ? previewEl.textContent.trim() : fillTemplate(currentIndex ?? 0, currentLang, name, roll, enroll);
+    const subject = encodeURIComponent("Request for Early Declaration of Result – BA ODL 2023 Batch");
+    const bodyEnc = encodeURIComponent(bodyText);
+
+    // Build Gmail compose URL: To -> Gaffar; BCC -> mrizvi (as requested)
+    const to = "g.mgaffar@jmi.ac.in";
+    const bcc = "mrizvi@jmi.ac.in";
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(to)}&bcc=${encodeURIComponent(bcc)}&su=${subject}&body=${bodyEnc}`;
+
+    // Open Gmail first so popup is allowed by browser
+    const win = window.open(gmailUrl, "_blank");
+    if(!win){
+      alert("Popup blocked. Please allow popups for this site and try again.");
+      return;
+    }
+
+    // Immediately save a record to Firestore (Option A)
+    statusEl.textContent = "Recording your submission...";
+
+    try{
+      await addDoc(submissionsCol, {
+        name, roll, enrollment: enroll,
+        lang: currentLang,
+        templateIndex: currentIndex ?? 0,
+        mailBody: bodyText,
+        submittedAt: new Date().toISOString(),
+        ts: serverTimestamp()
+      });
+      statusEl.textContent = "Saved locally. Gmail opened — review & send.";
+      // update total count appears through onSnapshot automatically
+    } catch (err){
+      console.error("Save error:", err);
+      statusEl.textContent = "Could not save submission — please try again.";
+    }
+  });
+
+  // initial preview hint
+  previewEl.textContent = "Please enter Name, Roll No and Enrollment No to generate an email preview.";
 </script>
 </body>
 </html>

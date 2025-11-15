@@ -1,37 +1,41 @@
-<!-- PART 1: HTML + CSS (JMI-GREEN THEME) -->
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<!-- Modern viewport (viewport-fit=cover helps with notches) -->
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Report Result Delay — JMI CDOE</title>
 
 <style>
+  /* ---------- Theme & reset ---------- */
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; width: 100%; overflow-x: hidden; }
   :root{
     --bg: #f3faf5;
     --card: #ffffff;
     --muted: #5b6b54;
-    --accent: #1e7a3a;      /* deep JMI green */
-    --accent-2:#2fa14a;     /* lighter green */
+    --accent: #1e7a3a;
+    --accent-2: #2fa14a;
     --surface: #fbfff9;
     --shadow: 0 10px 30px rgba(20,40,20,0.06);
     --radius: 12px;
     --maxW: 1100px;
-    --glass: rgba(255,255,255,0.6);
+    --vh: 1vh; /* will be updated by JS */
   }
 
-  *{box-sizing:border-box}
-  html,body{height:100%}
   body{
-    margin:0;
     font-family: "Inter", "Segoe UI", Roboto, Arial, sans-serif;
-    background: linear-gradient(180deg, var(--bg) 0%, #eef7ec 100%);
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
+    background: linear-gradient(180deg, var(--bg) 0%, #eef7ec 100%);
     display:flex;
     align-items:center;
     justify-content:center;
-    padding:28px;
+    padding-top: env(safe-area-inset-top);
+    padding-left: 18px;
+    padding-right: 18px;
+    padding-bottom: env(safe-area-inset-bottom);
+    min-height: calc(var(--vh, 1vh) * 100);
     color:#0f1720;
   }
 
@@ -43,167 +47,54 @@
     box-shadow:var(--shadow);
     padding:26px;
     border:1px solid rgba(14,60,24,0.03);
+    margin: 12px 0;
   }
 
-  header{
-    display:flex;
-    gap:18px;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-  }
+  header{ display:flex; gap:18px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .title{ display:flex; flex-direction:column; gap:6px; }
+  h1{ margin:0; font-size:1.45rem; color:var(--accent); letter-spacing:-0.2px; }
+  .subtitle{ color:var(--muted); font-size:13.5px; }
 
-  .title {
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
-  h1{
-    margin:0;
-    font-size:1.45rem;
-    letter-spacing: -0.2px;
-    color:var(--accent);
-  }
-  .subtitle{
-    margin:0;
-    color:var(--muted);
-    font-size:13.5px;
-  }
-
-  .badges{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    flex-wrap:wrap;
-  }
+  .badges{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
   .badge{
-    background:linear-gradient(180deg, #ffffff, #f7fff7);
+    background:linear-gradient(180deg,#fff,#f7fff7);
     border:1px solid rgba(34,100,50,0.08);
-    padding:8px 12px;
-    border-radius:999px;
-    font-weight:700;
-    color:var(--accent);
-    box-shadow:0 6px 18px rgba(22,90,35,0.04);
-    font-size:13px;
+    padding:8px 12px; border-radius:999px; font-weight:700; color:var(--accent);
+    box-shadow:0 6px 18px rgba(22,90,35,0.04); font-size:13px;
   }
 
-  /* layout rows/cols */
-  .grid{
-    display:grid;
-    grid-template-columns: 1fr 380px;
-    gap:18px;
-    margin-top:18px;
-    align-items:start;
-  }
+  .grid{ display:grid; grid-template-columns:1fr 380px; gap:18px; margin-top:18px; align-items:start; }
 
-  /* left column form */
-  .card-panel{
-    background:var(--surface);
-    border-radius:10px;
-    padding:16px;
-    border:1px solid rgba(14,60,24,0.04);
-  }
+  .card-panel{ background:var(--surface); border-radius:10px; padding:16px; border:1px solid rgba(14,60,24,0.04); }
+  .fields{ display:grid; gap:12px; }
+  label{ font-size:13px; color:#0d2b14; font-weight:700; margin-bottom:6px; display:block; }
+  input[type="text"]{ width:100%; padding:10px 12px; border-radius:8px; border:1px solid #dfe8df; font-size:15px; background:#fff; }
+  input[type="text"]:focus{ outline:none; box-shadow:0 0 0 6px rgba(48,128,64,0.06); border-color:var(--accent); }
 
-  .fields{display:grid; gap:12px;}
-  label{font-size:13px;color:#0d2b14;font-weight:700;margin-bottom:6px;display:block}
-  input[type="text"]{
-    width:100%;
-    padding:10px 12px;
-    border-radius:8px;
-    border:1px solid #dfe8df;
-    font-size:15px;
-    background:#fff;
-  }
-  input[type="text"]:focus{outline:none;box-shadow:0 0 0 6px rgba(48,128,64,0.06);border-color:var(--accent)}
+  .controls-row{ display:flex; gap:10px; align-items:center; margin-top:12px; flex-wrap:wrap; }
+  .toggle{ display:inline-flex; background:#fff; border-radius:10px; border:1px solid #e6f0e8; overflow:hidden; }
+  .toggle button{ padding:8px 12px; border:0; cursor:pointer; background:transparent; font-weight:700; color:var(--muted); }
+  .toggle button.active{ background:linear-gradient(180deg,var(--accent-2),var(--accent)); color:#fff; }
 
-  .controls-row{
-    display:flex;
-    gap:10px;
-    align-items:center;
-    margin-top:12px;
-    flex-wrap:wrap;
-  }
-  .toggle{
-    display:inline-flex;
-    background:#fff;
-    border-radius:10px;
-    border:1px solid #e6f0e8;
-    overflow:hidden;
-  }
-  .toggle button{
-    padding:8px 12px;
-    border:0;
-    cursor:pointer;
-    background:transparent;
-    font-weight:700;
-    color:var(--muted);
-  }
-  .toggle button.active{
-    background:linear-gradient(180deg,var(--accent-2),var(--accent));
-    color:#fff;
-  }
+  .info{ background:linear-gradient(180deg,#f6fff6,#f0faf0); border:1px solid rgba(34,100,50,0.06); padding:10px 12px; border-radius:8px; color:var(--muted); font-size:13px; }
 
-  .info{
-    background:linear-gradient(180deg,#f6fff6,#f0faf0);
-    border:1px solid rgba(34,100,50,0.06);
-    padding:10px 12px;
-    border-radius:8px;
-    color:var(--muted);
-    font-size:13px;
-  }
-
-  /* right column preview */
-  .preview-wrap{
-    display:flex;
-    flex-direction:column;
-    gap:8px;
-  }
+  .preview-wrap{ display:flex; flex-direction:column; gap:8px; }
   .preview{
-    background:var(--card);
-    padding:16px;
-    min-height:260px;
-    border-radius:10px;
-    border:1px solid #e7efe7;
-    font-size:15px;
-    line-height:1.6;
-    color:#0f1f15;
-    white-space:pre-wrap;
-    overflow:auto;
+    background:var(--card); padding:16px; min-height:260px; border-radius:10px; border:1px solid #e7efe7;
+    font-size:15px; line-height:1.6; color:#0f1f15; white-space:pre-wrap; overflow:auto;
   }
 
-  .rewrite{
-    align-self:flex-end;
-    margin-top:6px;
-    background:#fff;border:1px solid rgba(20,80,30,0.06);
-    padding:8px 10px;border-radius:8px;font-weight:700;color:var(--accent);
-    cursor:pointer;box-shadow:0 6px 18px rgba(18,70,28,0.04)
-  }
+  .rewrite{ align-self:flex-end; margin-top:6px; background:#fff; border:1px solid rgba(20,80,30,0.06); padding:8px 10px; border-radius:8px; font-weight:700; color:var(--accent); cursor:pointer; box-shadow:0 6px 18px rgba(18,70,28,0.04); }
 
-  .send-row{display:flex;justify-content:center;margin-top:14px}
-  .send-btn{
-    background:var(--accent);
-    color:#fff;
-    padding:12px 28px;
-    border-radius:10px;border:0;
-    cursor:pointer;font-weight:800;font-size:15px;
-    box-shadow:0 14px 36px rgba(30,122,58,0.14);
-  }
-  .send-btn:disabled{opacity:.6;cursor:default}
+  .send-row{ display:flex; justify-content:center; margin-top:14px; }
+  .send-btn{ background:var(--accent); color:#fff; padding:12px 28px; border-radius:10px; border:0; cursor:pointer; font-weight:800; font-size:15px; box-shadow:0 14px 36px rgba(30,122,58,0.14); }
+  .send-btn:disabled{ opacity:.6; cursor:default; }
 
-  .note{text-align:center;color:var(--muted);font-size:13px;margin-top:10px}
+  .note{ text-align:center; color:var(--muted); font-size:13px; margin-top:10px; }
+  footer{ margin-top:18px; text-align:center; color:var(--muted); font-size:13px; }
 
-  footer{margin-top:18px;text-align:center;color:var(--muted);font-size:13px}
-
-  /* Responsive */
-  @media (max-width:980px){
-    .grid{grid-template-columns:1fr}
-    .preview{min-height:320px}
-  }
-  @media (max-width:480px){
-    h1{font-size:1.2rem}
-    .badge{font-size:12px;padding:6px 10px}
-    .send-btn{width:100%}
-  }
+  @media (max-width:980px){ .grid{ grid-template-columns:1fr } .preview{ min-height:320px } }
+  @media (max-width:480px){ h1{ font-size:1.2rem } .badge{ font-size:12px; padding:6px 10px } .send-btn{ width:100% } }
 </style>
 </head>
 <body>
@@ -270,527 +161,478 @@
 
     <footer>System for student assistance — use responsibly.</footer>
   </div>
-  <!-- PART 2: JavaScript (templates + logic + firebase) -->
+
 <script type="module">
-  /*
-    V2 JS: mailto-based, Firestore save-before-navigation,
-    15 English + 15 Hinglish templates,
-    language memory, randomization, rewrite, live counter, readable timestamp.
-  */
-  
-  /* ---------- Firebase SDK imports (v11) ---------- */
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import {
-    getFirestore,
-    collection,
-    addDoc,
-    serverTimestamp,
-    onSnapshot
-  } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-  
-  /* ====== REPLACE WITH YOUR FIREBASE CONFIG ====== */
-  const firebaseConfig = {
-    apiKey: "AIzaSyCt0mvu4CbRQBdBJL5wAxijAdEirBUDCDc",
-    authDomain: "justice-for-jmi.firebaseapp.com",
-    projectId: "justice-for-jmi",
-    storageBucket: "justice-for-jmi.firebasestorage.app",
-    messagingSenderId: "17849710989",
-    appId: "1:17849710989:web:0b1dd3c9bb77520d98a5c4"
-  };
-  /* =============================================== */
-  
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const COLLECTION_NAME = "resultdelayreport";
-  const submissionsCol = collection(db, COLLECTION_NAME);
-  
-  /* ---------- DOM references (match Part 1 HTML) ---------- */
-  const nameEl = document.getElementById("name");
-  const rollEl = document.getElementById("roll");
-  const enrollEl = document.getElementById("enroll");
-  const previewEl = document.getElementById("preview");
-  const btnEng = document.getElementById("btnEng");
-  const btnHin = document.getElementById("btnHin");
-  const rewriteBtn = document.getElementById("rewriteBtn");
-  const sendBtn = document.getElementById("sendBtn");
-  const daysBadge = document.getElementById("daysBadge");
-  const totalBadge = document.getElementById("totalBadge");
-  const statusNote = document.getElementById("statusNote");
-  
-  /* ---------- Templates (15 English, 15 Hinglish) ---------- */
-  /* Each template uses [NAME], [ROLL], [ENROLL] and 24 Aug displayed as "24 Aug 2025" */
-  /* Templates are designed with one blank line between paragraphs (\n\n) */
-  
-  const templatesEnglish = [
-  `Respected Sir,
-  
-  My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. I completed my second-year examinations on 24 Aug 2025, and since that date I have not received any update about my result.
-  
-  The delay has caused uncertainty because I cannot be sure whether I have cleared all subjects or whether I need to prepare for a re-attempt. Kindly inform when the results will be published, so I can plan my academic steps accordingly.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  I am [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. My final second-year paper was on 24 Aug 2025. I have been checking for the result but there is no update yet.
-  
-  This lack of clarity affects my preparation for the coming year. Please provide an expected timeline for publication or release the results soon.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  This is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. On 24 Aug 2025 I completed the second-year exams. It has been some time and I still haven't seen the results on the portal.
-  
-  If any subject requires re-examination, early notification would help me prepare properly. I kindly request you to announce the results or share a tentative date.
-  
-  Thank you,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  My name is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. Our second-year exams ended on 24 Aug 2025 and the result has not been declared so far.
-  
-  The delay is creating anxiety as I do not know my academic status. Please release the results at the earliest or inform us of the expected announcement date.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  I am [NAME], Roll No. [ROLL], Enrollment [ENROLL]. I appeared in the second-year exams which concluded on 24 Aug 2025. The result is still pending.
-  
-  I request your kind attention to expedite the result declaration or provide a clear timeline so that I can plan my studies.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  This is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. My last exam was on 24 Aug 2025. I am waiting for the result and would appreciate an update.
-  
-  A timely result will assist in managing study plans for any possible re-attempts. Please let us know when to expect the declaration.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Since our exams ended on 24 Aug 2025, I have been awaiting the result announcement but there has been no information.
-  
-  It would be very helpful if you could share the expected date for result publication so I can prepare accordingly.
-  
-  Thank you,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My second-year exams finished on 24 Aug 2025 and I have not received the result yet.
-  
-  I humbly request you to share an update or to release the results soon, as clarity is essential for planning.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. The second-year exam cycle ended on 24 Aug 2025 and results are still pending. This delay is concerning.
-  
-  Please provide a timeline for declaration so students can prepare for any required re-attempts.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. The exams concluded on 24 Aug 2025, yet the results are not published.
-  
-  I respectfully request the results be announced at the earliest or for an update about expected publication date.
-  
-  Thank you,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My 2nd-year exams finished on 24 Aug 2025 and I am still waiting for the results. The delay is affecting my study schedule.
-  
-  Kindly look into this and inform us about the expected date of result publication.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. I completed the second-year exams on 24 Aug 2025 and would like to request an update on the result timeline.
-  
-  Timely communication will help me plan my next steps if any re-exam is required.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. The exams ended on 24 Aug 2025; results remain unpublished. I request your assistance in announcing the results at the earliest possible date.
-  
-  Thank you,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Since the last paper on 24 Aug 2025 I have been expecting the result. Please provide an update or release the results soon.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. The second-year exams ended on 24 Aug 2025 and the result is still awaited. I request a quick update on the publication schedule.
-  
-  Sincerely,
-  [NAME]`
-  ];
-  
-  const templatesHinglish = [
-  `Respected Sir,
-  
-  My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. Hamare second-year exams 24 Aug 2025 ko khatam hue the, lekin abhi tak result announce nahi hua.
-  
-  Is delay ki wajah se mujhe pata nahi chal pa raha ke main sab subjects clear hua hoon ya kisi me re-attempt karna padega. Aap se request hai ke please result ka expected date bata dein ya jald se jald declare karein.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL] hoon. 24 Aug 2025 ko hamare second-year exams finish hue the; abhi tak result nahi aaya.
-  
-  Result delay se samajh me nahi aa raha hai ke aage kese padhayi karni hai. Sir ya to result announce kar den ya ek tentative date bata dein.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Mera naam [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare exams complete hue the, par result abhi tak publish nahi hua.
-  
-  Agar kisi subject me re-attempt karna pade to uski tayyari ke liye waqt chahiye. Sir please result jaldi se share karein.
-  
-  Thank you,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Mein [NAME], Roll No [ROLL], Enrollment [ENROLL]. Hamare second-year exams 24 Aug 2025 ko khatam hue the aur abhi tak result pending hai. Ye delay mere liye tension ka sabab ban raha hai.
-  
-  Please result ko jald declare karein ya ek expected date bata dein.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Yeh [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ka intezaar chal raha hai; abhi tak koi update nahi mili.
-  
-  Aap se request hai ke please result ki expected date batayein ya result jald publish karein.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamari second-year papers complete hue the. Abhi tak result nahi aaya aur is se planning mushkil ho rahi hai.
-  
-  Aap se request hai ke result jaldi announce karein.
-  
-  Thanks,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko exams finish hue the; result abhi pending hai. Agar koi backlog hua to timely update bahut zaruri hai.
-  
-  Please inform or publish the result soon.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ka wait chal raha hai; abhi tak koi news nahi. Please is par dhyan dein.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare final papers the aur result abhi tak pending hai. Is delay se time kam pad raha hai back exams ki tayyari ke liye.
-  
-  Please announce the results soon.
-  
-  Thank you,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. Exams 24 Aug 2025 ko khatam hue the; result abhi tak declare nahi hua. Please result ki update de dein.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result pending hai aur students ko clarity nahi mil rahi. Aap se guzarish hai ke result jaldi share karein.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. Hamare exams 24 Aug 2025 ko khatam hue; ab tak result publish nahi hua. Please provide an expected date.
-  
-  Thank you,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad result ka wait chal raha hai; timely update se students ko kaafi madad milegi.
-  
-  Kindly share the result or result date.
-  
-  Sincerely,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare exams finish hue the; abhi tak result pending hai. Please inform or publish the result soon.
-  
-  Regards,
-  [NAME]`,
-  
-  `Respected Sir,
-  
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ki information nahin mili. Aap se request hai ke result jald announce karen.
-  
-  Sincerely,
-  [NAME]`
-  ];
-  
-  /* ---------- Utility functions ---------- */
-  
-  function daysSinceExam() {
-    const examDate = new Date("2025-08-24T00:00:00Z");
-    const now = new Date();
-    const diff = Math.floor((now - examDate) / (1000 * 60 * 60 * 24));
-    return diff >= 0 ? diff : 0;
+/* ========== V3 Final JS ========== */
+/*  - Real mobile vh fix
+    - Safe-area respected in CSS
+    - Firebase v11 Firestore save before mailto
+    - 15 English + 15 Hinglish templates (unchanged wording)
+    - Randomization, rewrite, editable preview
+    - Total submissions via onSnapshot
+    - No duplicate/block-scoped redeclare errors
+*/
+
+/* ---------- Real mobile --vh (fix for top cut on mobile) ---------- */
+function setRealVh(){
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+}
+setRealVh();
+window.addEventListener('resize', setRealVh);
+
+/* ---------- Firebase SDK v11 imports ---------- */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  serverTimestamp,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+/* ====== Replace with your Firebase config ====== */
+const firebaseConfig = {
+  apiKey: "AIzaSyCt0mvu4CbRQBdBJL5wAxijAdEirBUDCDc",
+  authDomain: "justice-for-jmi.firebaseapp.com",
+  projectId: "justice-for-jmi",
+  storageBucket: "justice-for-jmi.firebasestorage.app",
+  messagingSenderId: "17849710989",
+  appId: "1:17849710989:web:0b1dd3c9bb77520d98a5c4"
+};
+/* ============================================ */
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const COLLECTION_NAME = "resultdelayreport";
+const submissionsCol = collection(db, COLLECTION_NAME);
+
+/* ---------- DOM references ---------- */
+const nameEl = document.getElementById("name");
+const rollEl = document.getElementById("roll");
+const enrollEl = document.getElementById("enroll");
+const previewEl = document.getElementById("preview");
+const btnEng = document.getElementById("btnEng");
+const btnHin = document.getElementById("btnHin");
+const rewriteBtn = document.getElementById("rewriteBtn");
+const sendBtn = document.getElementById("sendBtn");
+const daysBadge = document.getElementById("daysBadge");
+const totalBadge = document.getElementById("totalBadge");
+const statusNote = document.getElementById("statusNote");
+
+/* ---------- Templates (unchanged wording you provided) ---------- */
+const templatesEnglish = [
+`Respected Sir,
+
+My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. I completed my second-year examinations on 24 Aug 2025, and since that date I have not received any update about my result.
+
+The delay has caused uncertainty because I cannot be sure whether I have cleared all subjects or whether I need to prepare for a re-attempt. Kindly inform when the results will be published, so I can plan my academic steps accordingly.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+I am [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. My final second-year paper was on 24 Aug 2025. I have been checking for the result but there is no update yet.
+
+This lack of clarity affects my preparation for the coming year. Please provide an expected timeline for publication or release the results soon.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+This is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. On 24 Aug 2025 I completed the second-year exams. It has been some time and I still haven't seen the results on the portal.
+
+If any subject requires re-examination, early notification would help me prepare properly. I kindly request you to announce the results or share a tentative date.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+My name is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. Our second-year exams ended on 24 Aug 2025 and the result has not been declared so far.
+
+The delay is creating anxiety as I do not know my academic status. Please release the results at the earliest or inform us of the expected announcement date.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+I am [NAME], Roll No. [ROLL], Enrollment [ENROLL]. I appeared in the second-year exams which concluded on 24 Aug 2025. The result is still pending.
+
+I request your kind attention to expedite the result declaration or provide a clear timeline so that I can plan my studies.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+This is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. My last exam was on 24 Aug 2025. I am waiting for the result and would appreciate an update.
+
+A timely result will assist in managing study plans for any possible re-attempts. Please let us know when to expect the declaration.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Since our exams ended on 24 Aug 2025, I have been awaiting the result announcement but there has been no information.
+
+It would be very helpful if you could share the expected date for result publication so I can prepare accordingly.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My second-year exams finished on 24 Aug 2025 and I have not received the result yet.
+
+I humbly request you to share an update or to release the results soon, as clarity is essential for planning.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. The second-year exam cycle ended on 24 Aug 2025 and results are still pending. This delay is concerning.
+
+Please provide a timeline for declaration so students can prepare for any required re-attempts.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. The exams concluded on 24 Aug 2025, yet the results are not published.
+
+I respectfully request the results be announced at the earliest or for an update about expected publication date.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My 2nd-year exams finished on 24 Aug 2025 and I am still waiting for the results. The delay is affecting my study schedule.
+
+Kindly look into this and inform us about the expected date of result publication.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. I completed the second-year exams on 24 Aug 2025 and would like to request an update on the result timeline.
+
+Timely communication will help me plan my next steps if any re-exam is required.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. The exams ended on 24 Aug 2025; results remain unpublished. I request your assistance in announcing the results at the earliest possible date.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Since the last paper on 24 Aug 2025 I have been expecting the result. Please provide an update or release the results soon.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. The second-year exams ended on 24 Aug 2025 and the result is still awaited. I request a quick update on the publication schedule.
+
+Sincerely,
+[NAME]`
+];
+
+const templatesHinglish = [
+`Respected Sir,
+
+My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. Hamare second-year exams 24 Aug 2025 ko khatam hue the, lekin abhi tak result announce nahi hua.
+
+Is delay ki wajah se mujhe pata nahi chal pa raha ke main sab subjects clear hua hoon ya kisi me re-attempt karna padega. Aap se request hai ke please result ka expected date bata dein ya jald se jald declare karein.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL] hoon. 24 Aug 2025 ko hamare second-year exams finish hue the; abhi tak result nahi aaya.
+
+Result delay se samajh me nahi aa raha hai ke aage kese padhayi karni hai. Sir ya to result announce kar den ya ek tentative date bata dein.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare exams complete hue the, par result abhi tak publish nahi hua.
+
+Agar kisi subject me re-attempt karna pade to uski tayyari ke liye waqt chahiye. Sir please result jaldi se share karein.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+Mein [NAME], Roll No [ROLL], Enrollment [ENROLL]. Hamare second-year exams 24 Aug 2025 ko khatam hue the aur abhi tak result pending hai. Ye delay mere liye tension ka sabab ban raha hai.
+
+Please result ko jald declare karein ya ek expected date bata dein.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+Yeh [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ka intezaar chal raha hai; abhi tak koi update nahi mili.
+
+Aap se request hai ke please result ki expected date batayein ya result jald publish karein.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamari second-year papers complete hue the. Abhi tak result nahi aaya aur is se planning mushkil ho rahi hai.
+
+Aap se request hai ke result jaldi announce karein.
+
+Thanks,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko exams finish hue the; result abhi pending hai. Agar koi backlog hua to timely update bahut zaruri hai.
+
+Please inform or publish the result soon.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ka wait chal raha hai; abhi tak koi news nahi. Please is par dhyan dein.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare final papers the aur result abhi tak pending hai. Is delay se time kam pad raha hai back exams ki tayyari ke liye.
+
+Please announce the results soon.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. Exams 24 Aug 2025 ko khatam hue the; result abhi tak declare nahi hua. Please result ki update de dein.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result pending hai aur students ko clarity nahi mil rahi. Aap se guzarish hai ke result jaldi share karein.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. Hamare exams 24 Aug 2025 ko khatam hue; ab tak result publish nahi hua. Please provide an expected date.
+
+Thank you,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad result ka wait chal raha hai; timely update se students ko kaafi madad milegi.
+
+Kindly share the result or result date.
+
+Sincerely,
+[NAME]`,
+
+`Respected Sir,
+
+Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare exams finish hue the; abhi tak result pending hai. Please inform or publish the result soon.
+
+Regards,
+[NAME]`,
+
+`Respected Sir,
+
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ki information nahin mili. Aap se request hai ke result jald announce karen.
+
+Sincerely,
+[NAME]`
+];
+
+/* ---------- Utilities ---------- */
+function daysSinceExam() {
+  const examDate = new Date("2025-08-24T00:00:00Z");
+  const now = new Date();
+  const diff = Math.floor((now - examDate) / (1000 * 60 * 60 * 24));
+  return diff >= 0 ? diff : 0;
+}
+
+function readableTimestamp() {
+  const now = new Date();
+  const optsDate = { day: "2-digit", month: "short", year: "numeric" };
+  const optsTime = { hour: "2-digit", minute: "2-digit", hour12: true };
+  return `${now.toLocaleDateString("en-GB", optsDate)} — ${now.toLocaleTimeString("en-US", optsTime)}`;
+}
+
+function pickIndex(arrLen) {
+  return Math.floor(Math.random() * arrLen);
+}
+
+/* ---------- State ---------- */
+let currentLang = localStorage.getItem("rd_lang") || "en";
+let currentIndex = null;
+let userEdited = false;
+
+/* ---------- UI init ---------- */
+function initUIState(){
+  if (currentLang === "hi") {
+    btnHin.classList.add("active"); btnHin.setAttribute("aria-pressed","true");
+    btnEng.classList.remove("active"); btnEng.setAttribute("aria-pressed","false");
+  } else {
+    btnEng.classList.add("active"); btnEng.setAttribute("aria-pressed","true");
+    btnHin.classList.remove("active"); btnHin.setAttribute("aria-pressed","false");
   }
-  
-  function readableTimestamp() {
-    // Return readable time string in local timezone
-    const now = new Date();
-    // Format: 16 Nov 2025 — 10:42 PM
-    const optsDate = { day: "2-digit", month: "short", year: "numeric" };
-    const optsTime = { hour: "2-digit", minute: "2-digit", hour12: true };
-    return `${now.toLocaleDateString("en-GB", optsDate)} — ${now.toLocaleTimeString("en-US", optsTime)}`;
+  daysBadge.textContent = `Days since exam: ${daysSinceExam()}`;
+  setInterval(()=> daysBadge.textContent = `Days since exam: ${daysSinceExam()}`, 1000*60*60);
+}
+initUIState();
+
+/* ---------- Realtime counter ---------- */
+onSnapshot(submissionsCol, snap => {
+  try { totalBadge.textContent = `Total submissions: ${snap.size}`; }
+  catch(e){ console.error("snapshot error", e); totalBadge.textContent = `Total submissions: 0`; }
+});
+
+/* ---------- Preview generation ---------- */
+function fillTemplateByLang(idx, lang, name, roll, enroll){
+  const arr = lang === "hi" ? templatesHinglish : templatesEnglish;
+  let text = arr[idx % arr.length];
+  return text.replaceAll("[NAME]", name).replaceAll("[ROLL]", roll).replaceAll("[ENROLL]", enroll);
+}
+
+function generatePreviewAuto(){
+  const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+  if (!name || !roll || !enroll) {
+    if (!userEdited) previewEl.textContent = "Please enter Name, Roll No and Enrollment No to auto-generate a personalised email preview.";
+    return;
   }
-  
-  function pickIndex(arrLen) {
-    // pick a random index avoiding immediate repetition
-    let idx = Math.floor(Math.random() * arrLen);
-    return idx;
-  }
-  
-  /* ---------- State ---------- */
-  let currentLang = localStorage.getItem("rd_lang") || "en"; // 'en' or 'hi'
-  let currentIndex = null;
-  let userEdited = false;
-  
-  /* ---------- DOM initial setup ---------- */
-  function initUIState() {
-    // set language button active state
-    if (currentLang === "hi") {
-      btnHin.classList.add("active");
-      btnHin.setAttribute("aria-pressed", "true");
-      btnEng.classList.remove("active");
-      btnEng.setAttribute("aria-pressed", "false");
-    } else {
-      btnEng.classList.add("active");
-      btnEng.setAttribute("aria-pressed", "true");
-      btnHin.classList.remove("active");
-      btnHin.setAttribute("aria-pressed", "false");
-    }
-  
-    // update days badge
-    daysBadge.textContent = `Days since exam: ${daysSinceExam()}`;
-    setInterval(() => {
-      daysBadge.textContent = `Days since exam: ${daysSinceExam()}`;
-    }, 1000 * 60 * 60); // update hourly
-  }
-  
-  initUIState();
-  
-  /* ---------- Real-time total submissions ---------- */
-  onSnapshot(submissionsCol, snap => {
-    try {
-      totalBadge.textContent = `Total submissions: ${snap.size}`;
-    } catch (e) {
-      console.error("onSnapshot error:", e);
-      totalBadge.textContent = `Total submissions: 0`;
-    }
-  });
-  
-  /* ---------- Preview generation ---------- */
-  
-  function fillTemplateByLang(idx, lang, name, roll, enroll) {
-    const arr = lang === "hi" ? templatesHinglish : templatesEnglish;
-    let text = arr[idx % arr.length];
-    text = text.replaceAll("[NAME]", name).replaceAll("[ROLL]", roll).replaceAll("[ENROLL]", enroll);
-    return text;
-  }
-  
-  function generatePreviewAuto() {
-    const name = nameEl.value.trim();
-    const roll = rollEl.value.trim();
-    const enroll = enrollEl.value.trim();
-  
-    if (!name || !roll || !enroll) {
-      if (!userEdited) {
-        previewEl.textContent = "Please enter Name, Roll No and Enrollment No to auto-generate a personalised email preview.";
-      }
-      return;
-    }
-  
-    if (userEdited) return;
-  
-    const arrLen = currentLang === "hi" ? templatesHinglish.length : templatesEnglish.length;
-    currentIndex = pickIndex(arrLen);
+  if (userEdited) return;
+  const arrLen = currentLang === "hi" ? templatesHinglish.length : templatesEnglish.length;
+  currentIndex = pickIndex(arrLen);
+  previewEl.textContent = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
+}
+
+/* wire inputs */
+[nameEl, rollEl, enrollEl].forEach(el => {
+  el.addEventListener('input', ()=> { userEdited = false; generatePreviewAuto(); });
+  el.addEventListener('paste', ()=> setTimeout(()=> { userEdited = false; generatePreviewAuto(); }, 20));
+});
+previewEl.addEventListener('input', ()=> { userEdited = true; });
+
+/* ---------- Language toggle ---------- */
+btnEng.addEventListener('click', ()=>{
+  currentLang = "en"; localStorage.setItem("rd_lang","en");
+  btnEng.classList.add("active"); btnEng.setAttribute("aria-pressed","true");
+  btnHin.classList.remove("active"); btnHin.setAttribute("aria-pressed","false");
+  const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+  if (name && roll && enroll) {
+    currentIndex = pickIndex(templatesEnglish.length);
     previewEl.textContent = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
+    userEdited = false;
   }
-  
-  /* initialize preview on input */
-  [nameEl, rollEl, enrollEl].forEach(el => {
-    el.addEventListener("input", () => { userEdited = false; generatePreviewAuto(); });
-    el.addEventListener("paste", () => setTimeout(() => { userEdited = false; generatePreviewAuto(); }, 20));
-  });
-  /* Track user edits */
-  previewEl.addEventListener("input", () => { userEdited = true; });
-  
-  /* ---------- Language toggle handlers ---------- */
-  btnEng.addEventListener("click", () => {
-    currentLang = "en";
-    localStorage.setItem("rd_lang", "en");
-    btnEng.classList.add("active"); btnEng.setAttribute("aria-pressed", "true");
-    btnHin.classList.remove("active"); btnHin.setAttribute("aria-pressed", "false");
-    // refresh preview
-    const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
-    if (name && roll && enroll) {
-      currentIndex = pickIndex(templatesEnglish.length);
-      previewEl.textContent = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
-      userEdited = false;
-    }
-  });
-  
-  btnHin.addEventListener("click", () => {
-    currentLang = "hi";
-    localStorage.setItem("rd_lang", "hi");
-    btnHin.classList.add("active"); btnHin.setAttribute("aria-pressed", "true");
-    btnEng.classList.remove("active"); btnEng.setAttribute("aria-pressed", "false");
-    const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
-    if (name && roll && enroll) {
-      currentIndex = pickIndex(templatesHinglish.length);
-      previewEl.textContent = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
-      userEdited = false;
-    }
-  });
-  
-  /* ---------- Rewrite (randomize) ---------- */
-  rewriteBtn.addEventListener("click", () => {
-    const name = nameEl.value.trim();
-    const roll = rollEl.value.trim();
-    const enroll = enrollEl.value.trim();
-    if (!name || !roll || !enroll) {
-      alert("Please fill Name, Roll No and Enrollment No first.");
-      return;
-    }
-    // pick another index
-    const arrLen = currentLang === "hi" ? templatesHinglish.length : templatesEnglish.length;
-    currentIndex = pickIndex(arrLen);
-    previewEl.style.opacity = "0.3";
-    setTimeout(() => {
-      previewEl.textContent = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
-      previewEl.style.opacity = "1";
-      userEdited = false;
-    }, 140);
-  });
-  
-  /* ---------- Send flow: save to Firestore then open mailto ---------- */
-  sendBtn.addEventListener("click", async () => {
-    const name = nameEl.value.trim();
-    const roll = rollEl.value.trim();
-    const enroll = enrollEl.value.trim();
-    if (!name || !roll || !enroll) {
-      alert("Please fill Name, Roll No and Enrollment No first.");
-      return;
-    }
-  
-    sendBtn.disabled = true;
-    statusNote.textContent = "Saving your submission...";
-  
-    const mailBody = (previewEl.textContent && previewEl.textContent.trim().length > 0)
-      ? previewEl.textContent.trim()
-      : fillTemplateByLang(currentIndex ?? 0, currentLang, name, roll, enroll);
-  
-    // data to store
-    const docData = {
-      name,
-      roll,
-      enrollment: enroll,
-      language: currentLang === "hi" ? "hinglish" : "english",
-      templateIndex: currentIndex ?? 0,
-      mailBody,
-      readableTime: readableTimestamp(),
-      ts: serverTimestamp()
-    };
-  
-    try {
-      await addDoc(submissionsCol, docData);
-  
-      statusNote.textContent = "Saved. Opening your mail app...";
-  
-      // Build mailto URL (TO -> coordinator, BCC -> dean)
-      const to = "g.mgaffar@jmi.ac.in";
-      const bcc = "mrizvi@jmi.ac.in";
-      const subject = "Regarding Delay in Declaration of BA ODL 2nd-Year Results";
-  
-      // Ensure line breaks encoded as %0A
-      const subjectEnc = encodeURIComponent(subject);
-      const bodyEnc = encodeURIComponent(mailBody);
-  
-      const mailto = `mailto:${to}?bcc=${encodeURIComponent(bcc)}&subject=${subjectEnc}&body=${bodyEnc}`;
-  
-      // Navigate to mailto (open device mail app)
-      window.location.href = mailto;
-  
-      // Re-enable after a short delay in case page remains
-      setTimeout(() => { sendBtn.disabled = false; statusNote.textContent = "If your mail app did not open, allow pop-ups or try again."; }, 2000);
-    } catch (err) {
-      console.error("Save error:", err);
-      alert("There was an error saving your submission. Please try again.");
-      statusNote.textContent = "Error saving submission.";
-      sendBtn.disabled = false;
-    }
-  });
-  
-  /* ---------- Initial auto-preview (if fields present) ---------- */
-  document.addEventListener("DOMContentLoaded", () => {
-    // set initial preview language
-    const storedLang = localStorage.getItem("rd_lang");
-    if (storedLang) currentLang = storedLang;
-    initUIState();
-    generatePreviewAuto();
-  });
-  </script>
-  
+});
+btnHin.addEventListener('click', ()=>{
+  currentLang = "hi"; localStorage.setItem("rd_lang","hi");
+  btnHin.classList.add("active"); btnHin.setAttribute("aria-pressed","true");
+  btnEng.classList.remove("active"); btnEng.setAttribute("aria-pressed","false");
+  const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+  if (name && roll && enroll) {
+    currentIndex = pickIndex(templatesHinglish.length);
+    previewEl.textContent = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
+    userEdited = false;
+  }
+});
+
+/* ---------- Rewrite ---------- */
+rewriteBtn.addEventListener('click', ()=>{
+  const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+  if (!name || !roll || !enroll) { alert("Please fill Name, Roll No and Enrollment No first."); return; }
+  const arrLen = currentLang === "hi" ? templatesHinglish.length : templatesEnglish.length;
+  currentIndex = pickIndex(arrLen);
+  previewEl.style.opacity = "0.28";
+  setTimeout(()=> {
+    previewEl.textContent = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
+    previewEl.style.opacity = "1";
+    userEdited = false;
+  }, 140);
+});
+
+/* ---------- Send flow ---------- */
+sendBtn.addEventListener('click', async ()=>{
+  const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+  if (!name || !roll || !enroll) { alert("Please fill Name, Roll No and Enrollment No first."); return; }
+
+  sendBtn.disabled = true;
+  statusNote.textContent = "Saving your submission...";
+
+  const mailBody = (previewEl.textContent && previewEl.textContent.trim().length>0) ? previewEl.textContent.trim() : fillTemplateByLang(currentIndex ?? 0, currentLang, name, roll, enroll);
+
+  const docData = {
+    name, roll, enrollment: enroll,
+    language: currentLang === "hi" ? "hinglish" : "english",
+    templateIndex: currentIndex ?? 0,
+    mailBody,
+    readableTime: readableTimestamp(),
+    ts: serverTimestamp()
+  };
+
+  try {
+    await addDoc(submissionsCol, docData);
+    statusNote.textContent = "Saved. Opening your mail app...";
+
+    const to = "g.mgaffar@jmi.ac.in";
+    const bcc = "mrizvi@jmi.ac.in";
+    const subject = "Regarding Delay in Declaration of BA ODL 2nd-Year Results";
+
+    const mailto = `mailto:${encodeURIComponent(to)}?bcc=${encodeURIComponent(bcc)}&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(mailBody)}`;
+
+    // Open mail app (mailto). On mobile this will open default mail app.
+    window.location.href = mailto;
+
+    setTimeout(()=> { sendBtn.disabled = false; statusNote.textContent = "If your mail app did not open, allow pop-ups or try again."; }, 1800);
+  } catch (err) {
+    console.error("save error", err);
+    alert("There was an error saving your submission. Please try again.");
+    statusNote.textContent = "Error saving submission.";
+    sendBtn.disabled = false;
+  }
+});
+
+/* ---------- Initial setup ---------- */
+document.addEventListener('DOMContentLoaded', ()=> {
+  const storedLang = localStorage.getItem("rd_lang");
+  if (storedLang) currentLang = storedLang;
+  initUIState();
+  generatePreviewAuto();
+});
+</script>
+
 </body>
 </html>

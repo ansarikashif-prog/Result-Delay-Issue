@@ -17,7 +17,7 @@
     --bg: #f7f8fa;
     --bg-2: #eef2ff;
     --card: #ffffff;
-    --surface: rgba(255,255,255,0.92);
+    --surface: rgba(255,255,255,0.96);
     --muted: #475569;
     --border: #e6eefc;
     --shadow-sm: 0 6px 18px rgba(16,24,40,0.06);
@@ -32,60 +32,59 @@
   body{
     font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
     -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    color:#0b1220; margin:0; padding:20px; display:block;
+    color:#0b1220; margin:0; padding:18px; display:block;
     background: linear-gradient(180deg, var(--bg), var(--bg-2));
   }
+
+  /* small top accent bar (keeps page from looking cropped) */
   body::before{
     content:""; position:fixed; top:0; left:0; right:0; height:4px;
     background:linear-gradient(90deg,var(--accent),var(--accent-2)); z-index:9999;
   }
 
   .container{
-    width:100%; 
-    max-width:var(--maxW); 
+    width:100%;
+    max-width:var(--maxW);
     margin:18px auto;
-    border-radius:16px; 
-    background:var(--card); 
-    padding:20px;
-    box-shadow:var(--shadow-md); 
+    border-radius:14px;
+    background:var(--card);
+    padding:18px;
+    box-shadow:var(--shadow-md);
     border:1px solid var(--border);
-    min-height:20vh; 
-    min-height:20dvh; 
-    position:relative; 
+    min-height:22vh;
+    position:relative;
     overflow:visible;
+  }
+  .form-group{
+    width: 90%;
   }
 
   /* top header */
-  header{ 
-    display:flex; 
-    gap:16px; 
-    align-items:center; 
-    justify-content:space-between; 
-    flex-wrap:wrap; 
-    position:relative; }
+  header{
+    display:flex;
+    gap:16px;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    position:relative;
+  }
 
-  .title{ 
-    display:flex; 
-    flex-direction:column; 
-    gap:6px; }
+  .title{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
 
-  h1{ 
-    margin:0; 
-    font-family:"Plus Jakarta Sans", "Inter", sans-serif; 
-    font-weight:700; 
-    color:var(--accent); 
-    font-size:1.35rem; }
+  h1{
+    margin:0;
+    font-family:"Plus Jakarta Sans", "Inter", sans-serif;
+    font-weight:700;
+    color:var(--accent);
+    font-size:1.25rem;
+  }
+  .subtitle{ margin:0; color:var(--muted); font-size:13px; }
 
-  .subtitle{ 
-    margin:0; 
-    color:var(--muted); 
-    font-size:13px; }
-
-  .meta-row{ 
-    display:flex; 
-    gap:12px; 
-    align-items:center; 
-    flex-wrap:wrap; }
+  .meta-row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
 
   .badge{
     display:inline-flex; 
@@ -93,7 +92,7 @@
     gap:8px; 
     padding:8px 12px; 
     border-radius:999px;
-    background:linear-gradient(180deg,#fff,#fbfdff);
+    background:linear-gradient(180deg,#fff,#fbfdff); 
     border:1px solid rgba(37,99,235,0.06);
     color:var(--accent); 
     font-weight:700; 
@@ -101,7 +100,7 @@
     box-shadow:var(--shadow-sm);
   }
 
-  /* theme toggle icon - top-right inside container */
+  /* theme toggle top-right */
   .theme-toggle {
     position:absolute;
     top:12px;
@@ -115,12 +114,10 @@
     align-items:center;
     justify-content:center;
     cursor:pointer;
-    box-shadow:0 6px 18px rgba(15,23,42,0.06);
+    box-shadow:0 6px 18px rgba(15,23,42,0.04);
     transition:transform .12s, background .12s;
   }
-  .theme-toggle:hover{ 
-    transform:translateY(-3px); 
-    background:rgba(2,6,23,0.03); }
+  .theme-toggle:hover{ transform:translateY(-3px); background:rgba(2,6,23,0.03); }
 
   /* grid layout */
   .grid{ 
@@ -134,12 +131,14 @@
   .card-panel{ 
     background:var(--surface); 
     border-radius:12px; 
-    padding:18px; 
+    padding:16px; 
     border:1px solid var(--border); 
     box-shadow:var(--shadow-sm); }
+
   .fields{ 
     display:grid; 
-    gap:14px; }
+    gap:12px; }
+
   label{ 
     display:block; 
     font-size:13px; 
@@ -147,27 +146,21 @@
     font-weight:700; 
     margin-bottom:6px; }
 
-  .form-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap:12px; }
+  .form-grid{ 
+    display:grid; 
+    grid-template-columns: repeat(2, 1fr); 
+    gap:12px; }
   @media (max-width:720px){ .form-grid{ grid-template-columns: 1fr; } }
 
   input[type="text"], input[type="tel"], textarea{
-    width:90%; 
-    padding:11px 14px; 
-    border-radius:10px; 
-    border:1px solid var(--border); 
-    font-size:15px;
-    background: linear-gradient(180deg,#fff,#fbfdff); 
-    color:#0b200d;
+    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); font-size:15px; background: linear-gradient(180deg,#fff,#fbfdff); color:#0b200d;
   }
-  input:focus, textarea:focus{ 
-    outline:none; 
-    border-color: var(--accent); 
-    box-shadow: 0 6px 24px rgba(37,99,235,0.06); 
-    transform: translateY(-1px); }
+  input:focus, textarea:focus{ outline:none; border-color: var(--accent); box-shadow: 0 6px 24px rgba(37,99,235,0.06); transform: translateY(-1px); }
 
   .controls-row{ 
     display:flex; 
-    gap:10px; align-items:center; 
+    gap:10px; 
+    align-items:center; 
     flex-wrap:wrap; 
     margin-top:6px; }
 
@@ -180,7 +173,8 @@
 
   .toggle button{ 
     padding:8px 12px; 
-    border:0; cursor:pointer; 
+    border:0; 
+    cursor:pointer; 
     background:transparent; 
     font-weight:700; 
     color:var(--muted); 
@@ -200,38 +194,14 @@
 
   /* preview */
   .preview-wrap{ display:flex; flex-direction:column; gap:10px; }
-  textarea#preview{ background-color:#f8fdff; border-color:#e2f0ff; min-height:220px; max-height:60dvh; overflow:hidden; resize:vertical; line-height:1.6; font-family:"Inter", system-ui, sans-serif; box-shadow:var(--shadow-sm); padding:14px; border-radius:10px; }
+  textarea#preview{ background-color:#f8fdff; border-color:#e2f0ff; min-height:200px; max-height:60dvh; overflow:hidden; resize:vertical; line-height:1.6; font-family:"Inter", system-ui, sans-serif; box-shadow:var(--shadow-sm); padding:14px; border-radius:10px; white-space:pre-wrap; }
 
   .controls-bottom{ display:flex; justify-content:space-between; gap:12px; align-items:center; }
   .rewrite{ background:#bbd5ff; border:1px solid rgba(3, 28, 56, 0.14); padding:8px 12px; border-radius:10px; font-weight:700; color:var(--btn-dark); cursor:pointer; box-shadow:0 8px 22px rgba(15,23,42,0.04); transition: transform .14s; }
   .rewrite:hover{ transform:translateY(-3px); }
 
-  .send-row{ 
-    display:flex; 
-    justify-content:center; 
-    margin-top:8px; }
-  .send-btn{ 
-    position:relative; 
-    background:var(--btn-dark); 
-    color:#fff; 
-    padding:12px 26px; 
-    border-radius:12px; 
-    border:0; 
-    cursor:pointer; 
-    font-weight:800; 
-    font-size:15px; 
-    box-shadow:0 14px 36px rgba(2,6,23,0.12); 
-    display:inline-flex; 
-    align-items:center; 
-    gap:10px; 
-    transition: transform .12s, box-shadow .12s; 
-    min-width:170px; }
-
-    .privacy {
-      color: rgb(173, 173, 173);
-      font-size: 10px;
-    }
-
+  .send-row{ display:flex; justify-content:center; margin-top:8px; }
+  .send-btn{ position:relative; background:var(--btn-dark); color:#fff; padding:12px 24px; border-radius:12px; border:0; cursor:pointer; font-weight:800; font-size:15px; box-shadow:0 14px 36px rgba(2,6,23,0.12); display:inline-flex; align-items:center; gap:10px; transition: transform .12s, box-shadow .12s; min-width:170px; }
   .send-btn[disabled]{ opacity:0.7; cursor:default; box-shadow:none; transform:none; }
   .send-btn.spinner-mode{ width:48px; border-radius:50%; padding:12px; justify-content:center; }
   .btn-spinner{ width:18px; height:18px; border-radius:50%; border:3px solid rgba(255,255,255,0.22); border-top-color:#fff; animation:spin .7s linear infinite; display:none; }
@@ -242,32 +212,26 @@
   .note{ text-align:center; color:var(--muted); font-size:13px; margin-top:10px; }
   footer{ margin-top:18px; text-align:center; color:var(--muted); font-size:13px; }
 
-  .small-btn{ background:transparent; border:1px solid rgba(6,24,44,0.04); padding:6px 8px; border-radius:8px; cursor:pointer; color:var(--muted); font-weight:700 }
+  .privacy{ color: rgb(133,133,133); font-size:11px; margin-top:6px; text-align:center; }
 
   /* toast & confetti */
   .toast{ position:fixed; right:18px; bottom:18px; background:#0b1220; color:#fff; padding:12px 16px; border-radius:10px; box-shadow:var(--shadow-md); opacity:0; transform:translateY(10px); transition:opacity .18s, transform .18s; z-index:15000; font-weight:600; }
   .toast.show{ opacity:1; transform:none; }
   .confetti-piece{ position:fixed; width:8px; height:12px; z-index:14000; pointer-events:none; opacity:0.95; border-radius:2px }
 
-  /* dark theme */
-  :root[data-theme='dark']{ --bg:#07080a; --bg-2:#081027; --card:#071327; --surface: rgba(8,18,30,0.6); --muted:#9fb0d4; --border: rgba(255,255,255,0.04); --btn-dark:#e6eefc; --accent:#60a5fa; --accent-2:#3b82f6; }
-  [data-theme='dark'] body{ background: linear-gradient(180deg,var(--bg),var(--bg-2)); color:#e6eefc; }
-  [data-theme='dark'] .container{ border:1px solid var(--border); }
-  [data-theme='dark'] textarea#preview, [data-theme='dark'] input[type="text"], [data-theme='dark'] input[type="tel"]{ background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color: #e6eefc; border:1px solid var(--border); }
-
   /* small responsiveness tweaks */
   @media (max-width:480px){
-    .container{ padding:14px; margin:8px auto; }
-    .theme-toggle{ width:40px; height:40px; top:10px; right:8px; }
-    h1{ font-size:1.15rem; }
+    .container{ padding:12px; margin:8px auto; }
+    .theme-toggle{ width:40px; height:40px; top:8px; right:8px; }
+    h1{ font-size:1.05rem; }
+    textarea#preview{ font-size:14px; }
   }
 </style>
 </head>
 <body>
   <div class="container" role="main" aria-labelledby="main-title">
     <!-- Theme toggle (upper-right) -->
-    <button id="themeToggle" class="theme-toggle" title="Toggle dark mode" aria-label="Toggle theme">
-      <!-- simple SVG icon (sun/moon) will be swapped by JS -->
+    <button id="themeToggle" class="theme-toggle" title="Toggle theme (Light/Dark)" aria-label="Toggle theme">
       <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M12 3v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
         <circle cx="12" cy="12" r="4" stroke="#0b1220" stroke-width="1.6" />
@@ -358,7 +322,7 @@
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script type="module">
-  /* ============ Firebase imports ============ */
+  /* ================= Firebase imports ================= */
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
   import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
@@ -371,12 +335,13 @@
     messagingSenderId: "17849710989",
     appId: "1:17849710989:web:0b1dd3c9bb77520d98a5c4"
   };
+
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
   const COLLECTION_NAME = "resultdelayreport";
   const submissionsCol = collection(db, COLLECTION_NAME);
 
-  /* ============ DOM refs ============ */
+  /* ================= DOM refs ================= */
   const nameEl = document.getElementById('name');
   const rollEl = document.getElementById('roll');
   const enrollEl = document.getElementById('enroll');
@@ -395,8 +360,8 @@
   const themeToggle = document.getElementById('themeToggle');
   const themeIcon = document.getElementById('themeIcon');
 
-  /* ============ Templates (15+15) ============ */
-  const templatesEnglish = [ /* same 15 english templates as before */ 
+  /* ================= Templates (15+15) ================= */
+  const templatesEnglish = [
 `Respected Sir,
 
 My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. I completed my second-year examinations on 24 Aug 2025, and since that date I have not received any update about my result.
@@ -626,7 +591,8 @@ Sincerely,
 
   /* ============ Utilities ============ */
   function daysSinceExam(){
-    const examLocal = new Date(2025,7,24);
+    // Month index: 7 -> August (0-based months)
+    const examLocal = new Date(2025, 7, 24);
     const now = new Date();
     const diff = Math.floor((now - examLocal) / (1000*60*60*24));
     return diff >= 0 ? diff : 0;
@@ -697,6 +663,7 @@ Sincerely,
       const name = nameEl.value.trim();
       const roll = rollEl.value.trim();
       const enroll = enrollEl.value.trim();
+      const contact = contactEl.value.trim();
       if (!name || !roll || !enroll){
         if (!userEdited) { previewEl.value = "Please enter Full Name, Roll No and Enrollment No to auto-generate a personalised email preview."; autoResizePreview(); updateCharCount(); }
         return;
@@ -704,7 +671,9 @@ Sincerely,
       if (userEdited) { updateCharCount(); return; }
       const arrLen = (currentLang === 'hi') ? templatesHinglish.length : templatesEnglish.length;
       currentIndex = pickIndex(arrLen, currentIndex);
-      previewEl.value = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
+      const base = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
+      // Preview shows contact under signature for user's visual, but we will NOT include contact in mailto later.
+      previewEl.value = contact ? `${base}\nContact: ${escapeHtml(contact)}` : base;
       updateCharCount();
       autoResizePreview();
     }, 200);
@@ -733,16 +702,16 @@ Sincerely,
   btnEng.addEventListener('click', ()=>{ currentLang='en'; localStorage.setItem('rd_lang','en'); syncLangUI(); regenerateIfReady(); });
   btnHin.addEventListener('click', ()=>{ currentLang='hi'; localStorage.setItem('rd_lang','hi'); syncLangUI(); regenerateIfReady(); });
   function syncLangUI(){ if (currentLang==='hi'){ btnHin.classList.add('active'); btnHin.setAttribute('aria-pressed','true'); btnEng.classList.remove('active'); btnEng.setAttribute('aria-pressed','false'); } else { btnEng.classList.add('active'); btnEng.setAttribute('aria-pressed','true'); btnHin.classList.remove('active'); btnHin.setAttribute('aria-pressed','false'); } }
-  function regenerateIfReady(){ const n=nameEl.value.trim(), r=rollEl.value.trim(), e=enrollEl.value.trim(); if (n&&r&&e){ currentIndex = pickIndex((currentLang==='hi')?templatesHinglish.length:templatesEnglish.length, currentIndex); previewEl.value = fillTemplateByLang(currentIndex,currentLang,n,r,e); userEdited=false; autosaveDraft(); updateCharCount(); autoResizePreview(); } }
+  function regenerateIfReady(){ const n=nameEl.value.trim(), r=rollEl.value.trim(), e=enrollEl.value.trim(), c=contactEl.value.trim(); if (n&&r&&e){ currentIndex = pickIndex((currentLang==='hi')?templatesHinglish.length:templatesEnglish.length, currentIndex); const base = fillTemplateByLang(currentIndex,currentLang,n,r,e); previewEl.value = c ? `${base}\nContact: ${escapeHtml(c)}` : base; userEdited=false; autosaveDraft(); updateCharCount(); autoResizePreview(); } }
 
   /* ============ Rewrite ============ */
   rewriteBtn.addEventListener('click', ()=>{
-    const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim();
+    const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim(), contact = contactEl.value.trim();
     if (!name||!roll||!enroll){ alert('Please fill Full Name, Roll No and Enrollment No first.'); return; }
     const arrLen = (currentLang==='hi')?templatesHinglish.length:templatesEnglish.length;
     currentIndex = pickIndex(arrLen, currentIndex);
     previewEl.style.opacity = '0.35';
-    setTimeout(()=>{ previewEl.value = fillTemplateByLang(currentIndex,currentLang,name,roll,enroll); previewEl.style.opacity='1'; userEdited=false; autosaveDraft(); updateCharCount(); autoResizePreview(); }, 140);
+    setTimeout(()=>{ const base = fillTemplateByLang(currentIndex,currentLang,name,roll,enroll); previewEl.value = contact ? `${base}\nContact: ${escapeHtml(contact)}` : base; previewEl.style.opacity='1'; userEdited=false; autosaveDraft(); updateCharCount(); autoResizePreview(); }, 140);
   });
 
   /* ============ Validation (contact mandatory) ============ */
@@ -762,7 +731,7 @@ Sincerely,
     return { ok:true };
   }
 
-  /* ============ Send flow ============ */
+  /* ============ Send flow (contact shown in preview but NOT in mailto) ============ */
   async function handleSend(){
     const now = Date.now();
     if (now - lastSendAt < RATE_LIMIT_MS){ showToast('Please wait a moment before sending again.'); return; }
@@ -774,50 +743,70 @@ Sincerely,
     const enroll = enrollEl.value.trim();
     const contact = contactEl.value.trim();
 
-    const baseBody = (previewEl.value && previewEl.value.trim().length>0) ? previewEl.value.trim() : fillTemplateByLang(currentIndex ?? 0, currentLang, name, roll, enroll);
+    // baseBody = the actual mail body we will open in user's mail app (WITHOUT contact)
+    const baseBody = (previewEl.value && previewEl.value.trim().length>0)
+      ? (() => {
+          // preview may include "Contact: ..." — remove any trailing "Contact:" line for mailto
+          const txt = previewEl.value.trim();
+          const lines = txt.split(/\r?\n/);
+          // remove last line if it starts with "Contact:"
+          if (lines.length > 0 && /^Contact:/i.test(lines[lines.length-1].trim())) {
+            lines.pop();
+          }
+          return lines.join('\n').trim();
+        })()
+      : fillTemplateByLang(currentIndex ?? 0, currentLang, name, roll, enroll);
 
-    // Append contact directly under signature name (one new line)
+    // fullBody contains the contact too — to be saved in Firestore and shown in preview
     const fullBody = `${baseBody}\nContact: ${contact}`;
 
     enterSpinnerMode();
     statusNote.textContent = 'Saving your submission...';
 
     const docData = {
-      name, roll, enrollment: enroll, contact: contact || null,
+      name,
+      roll,
+      enrollment: enroll,
+      contact: contact || null,
       language: currentLang === 'hi' ? 'hinglish' : 'english',
       templateIndex: currentIndex ?? 0,
-      mailBody: fullBody,
+      mailBody: fullBody, // store the version INCLUDING contact
       readableTime: readableTimestamp(),
       ts: serverTimestamp()
     };
 
     try {
+      // Save to Firestore (includes contact)
       await addDoc(submissionsCol, docData);
       statusNote.textContent = 'Saved. Preparing your mail...';
 
+      // Prepare mailto WITHOUT contact (baseBody)
       const to = 'g.mgaffar@jmi.ac.in';
       const bcc = 'mrizvi@jmi.ac.in';
       const subject = 'Regarding Delay in Declaration of BA ODL 2nd-Year Results';
       const subjectEnc = encodeURIComponent(subject);
-      const bodyEnc = encodeURIComponent(fullBody);
+      const bodyEnc = encodeURIComponent(baseBody);
       const mailto = `mailto:${encodeURIComponent(to)}?bcc=${encodeURIComponent(bcc)}&subject=${subjectEnc}&body=${bodyEnc}`;
 
       // small delay for UX
       await new Promise(r => setTimeout(r, 520));
 
       if (bodyEnc.length > MAILTO_BODY_THRESHOLD){
+        // If too long, copy baseBody to clipboard and open a short mail to aid user
         try {
-          await navigator.clipboard.writeText(fullBody);
+          await navigator.clipboard.writeText(baseBody);
           const shortBody = encodeURIComponent('Dear Sir,\n\nI have prepared a message and copied it to my clipboard. Please paste it into the email body and send.\n\nRegards,\n');
           const mailtoShort = `mailto:${encodeURIComponent(to)}?bcc=${encodeURIComponent(bcc)}&subject=${subjectEnc}&body=${shortBody}`;
           window.location.href = mailtoShort;
           showToast('Message copied to clipboard. Mail window opened — paste & send.');
         } catch (copyErr){
           console.warn('clipboard failed', copyErr);
+          // fallback: open mailto (might truncate body)
           window.location.href = mailto;
           showToast('Mail window opened. If body missing, paste message manually.');
         }
       } else {
+        // Normal, open mail with baseBody (WITHOUT contact)
         window.location.href = mailto;
         showToast('Mail window opened. Please send the message from your mail app.');
       }
@@ -873,7 +862,6 @@ Sincerely,
     });
   }
   function setThemeIcon(mode){
-    // simple swap: sun for light, moon for dark (svg path swap)
     if (!themeIcon) return;
     if (mode === 'dark'){
       themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="#fff"/>';
@@ -883,7 +871,7 @@ Sincerely,
   }
 
   /* ============ Auto-resize preview ============ */
-  function autoResizePreview(){ previewEl.style.height = 'auto'; const maxH = Math.min(window.innerHeight * 0.6, 1200); previewEl.style.height = Math.min(previewEl.scrollHeight + 6, maxH) + 'px'; }
+  function autoResizePreview(){ previewEl.style.height = 'auto'; const maxH = Math.min(window.innerHeight * 0.6, 1200); previewEl.style.height = Math.min(previewEl.scrollHeight + 8, maxH) + 'px'; }
   previewEl.addEventListener('input', autoResizePreview); window.addEventListener('resize', autoResizePreview);
 
   /* ============ Accessibility: Ctrl+Enter send ============ */

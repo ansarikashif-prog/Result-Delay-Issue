@@ -2,887 +2,544 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Report Result Delay — JMI CDOE</title>
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
 
 <style>
-  /* ----------------- Theme & base ----------------- */
+  /* ---------- Mobile-first theme ---------- */
   :root{
-    --accent: #2563EB;
-    --accent-2: #1E40AF;
-    --bg: #f7f8fa;
-    --bg-2: #eef2ff;
-    --card: #ffffff;
-    --surface: rgba(255,255,255,0.96);
-    --muted: #475569;
-    --border: #e6eefc;
-    --shadow-sm: 0 6px 18px rgba(16,24,40,0.06);
-    --shadow-md: 0 14px 40px rgba(15,23,42,0.08);
-    --radius: 12px;
-    --maxW: 1100px;
-    --btn-dark: #0a255e;
+    --accent:#2563EB; --accent-2:#1E40AF; --bg:#f7f8fa; --card:#ffffff; --muted:#475569;
+    --border:#e6eefc; --shadow:0 12px 36px rgba(16,24,40,0.06); --radius:14px; --btn:#0a255e;
+    --danger:#ef4444;
   }
 
-  /* Prevent vertical centering to avoid cropping on mobile */
-  html, body { height: 100%; min-height: 100%; }
-  body{
-    font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-    color:#0b1220; margin:0; padding:18px; display:block;
-    background: linear-gradient(180deg, var(--bg), var(--bg-2));
-  }
+  html,body{height:100%;margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:#071029;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+  .wrap{max-width:980px;margin:14px auto;padding:14px;box-sizing:border-box;}
+  .card{background:var(--card);border-radius:var(--radius);padding:14px;box-shadow:var(--shadow);border:1px solid var(--border);}
 
-  /* small top accent bar (keeps page from looking cropped) */
-  body::before{
-    content:""; position:fixed; top:0; left:0; right:0; height:4px;
-    background:linear-gradient(90deg,var(--accent),var(--accent-2)); z-index:9999;
-  }
+  header{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap;}
+  .title h1{font-family:"Plus Jakarta Sans",Inter,sans-serif;margin:0;font-size:1.1rem;color:var(--accent);}
+  .subtitle{color:var(--muted);font-size:13px;margin-top:6px;}
 
-  .container{
-    width:100%;
-    max-width:var(--maxW);
-    margin:18px auto;
-    border-radius:14px;
-    background:var(--card);
-    padding:18px;
-    box-shadow:var(--shadow-md);
-    border:1px solid var(--border);
-    min-height:22vh;
-    position:relative;
-    overflow:visible;
-  }
-  .form-group{
-    width: 90%;
-  }
+  .grid{display:grid;grid-template-columns:1fr;gap:14px;margin-top:12px;}
+  @media(min-width:880px){ .grid{grid-template-columns:1fr 420px;} }
 
-  /* top header */
-  header{
-    display:flex;
-    gap:16px;
-    align-items:center;
-    justify-content:space-between;
-    flex-wrap:wrap;
-    position:relative;
-  }
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:720px){ .form-grid{grid-template-columns:1fr;} }
 
-  .title{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
-  }
+  label{display:block;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:6px;}
+  input,textarea,select{width:100%;padding:11px;border-radius:10px;border:1px solid var(--border);font-size:15px;background:linear-gradient(180deg,#fff,#fbfdff);color:#071029;box-sizing:border-box;}
+  textarea{min-height:180px;resize:vertical;line-height:1.6;font-family:Inter,system-ui;}
+  .muted{font-size:13px;color:var(--muted);}
+  .controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;}
+  .btn{background:var(--btn);color:#fff;padding:10px 14px;border-radius:10px;border:0;font-weight:700;cursor:pointer;box-shadow:0 10px 28px rgba(2,6,23,0.08);display:inline-flex;align-items:center;gap:10px;}
+  .btn.ghost{background:transparent;color:var(--muted);border:1px solid rgba(6,24,44,0.04);box-shadow:none;}
+  .btn.secondary{background:linear-gradient(180deg,#fff,#fbfdff);color:var(--btn);border:1px solid var(--border);font-weight:700;}
+  .small{font-size:13px;color:var(--muted);}
+  .note{text-align:center;color:var(--muted);font-size:13px;margin-top:10px;}
+  footer{margin-top:14px;text-align:center;color:var(--muted);font-size:13px;}
+  .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(37,99,235,0.06);color:var(--accent);font-weight:700;font-size:13px;box-shadow:0 6px 18px rgba(15,23,42,0.04);}
 
-  h1{
-    margin:0;
-    font-family:"Plus Jakarta Sans", "Inter", sans-serif;
-    font-weight:700;
-    color:var(--accent);
-    font-size:1.25rem;
-  }
-  .subtitle{ margin:0; color:var(--muted); font-size:13px; }
+  /* language toggle full button */
+  .lang-toggle { display:inline-flex; gap:6px; align-items:center; padding:8px 12px; border-radius:10px; border:1px solid var(--border); background:linear-gradient(180deg,#fff,#fbfdff); cursor:pointer; }
+  .lang-toggle button { background:transparent; border:0; font-weight:700; cursor:pointer; padding:6px 10px; border-radius:8px; }
+  .lang-toggle button.active { background: linear-gradient(180deg,var(--accent-2),var(--accent)); color:#fff; box-shadow:0 8px 20px rgba(37,99,235,0.12); }
 
-  .meta-row{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  /* spinner */
+  .spinner{width:18px;height:18px;border-radius:50%;border:3px solid rgba(255,255,255,0.22);border-top-color:#fff;animation:spin .7s linear infinite;display:inline-block}
+  @keyframes spin{to{transform:rotate(360deg)}}
 
-  .badge{
-    display:inline-flex; 
-    align-items:center; 
-    gap:8px; 
-    padding:8px 12px; 
-    border-radius:999px;
-    background:linear-gradient(180deg,#fff,#fbfdff); 
-    border:1px solid rgba(37,99,235,0.06);
-    color:var(--accent); 
-    font-weight:700; 
-    font-size:13px; 
-    box-shadow:var(--shadow-sm);
-  }
+  /* subtle success animation */
+  .success-pop { transform: translateY(-6px); transition: transform .18s ease; }
 
-  /* theme toggle top-right */
-  .theme-toggle {
-    position:absolute;
-    top:12px;
-    right:12px;
-    background:transparent;
-    border:0;
-    width:44px;
-    height:44px;
-    border-radius:10px;
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    box-shadow:0 6px 18px rgba(15,23,42,0.04);
-    transition:transform .12s, background .12s;
-  }
-  .theme-toggle:hover{ transform:translateY(-3px); background:rgba(2,6,23,0.03); }
+  /* accessibility focus */
+  input:focus, textarea:focus, button:focus { outline: 3px solid rgba(37,99,235,0.12); outline-offset:2px; }
 
-  /* grid layout */
-  .grid{ 
-    display:grid; 
-    grid-template-columns: 1fr 420px; 
-    gap:20px; 
-    margin-top:18px; 
-    align-items:start; }
-  @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
-
-  .card-panel{ 
-    background:var(--surface); 
-    border-radius:12px; 
-    padding:16px; 
-    border:1px solid var(--border); 
-    box-shadow:var(--shadow-sm); }
-
-  .fields{ 
-    display:grid; 
-    gap:12px; }
-
-  label{ 
-    display:block; 
-    font-size:13px; 
-    color:var(--muted); 
-    font-weight:700; 
-    margin-bottom:6px; }
-
-  .form-grid{ 
-    display:grid; 
-    grid-template-columns: repeat(2, 1fr); 
-    gap:12px; }
-  @media (max-width:720px){ .form-grid{ grid-template-columns: 1fr; } }
-
-  input[type="text"], input[type="tel"], textarea{
-    width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border); font-size:15px; background: linear-gradient(180deg,#fff,#fbfdff); color:#0b200d;
-  }
-  input:focus, textarea:focus{ outline:none; border-color: var(--accent); box-shadow: 0 6px 24px rgba(37,99,235,0.06); transform: translateY(-1px); }
-
-  .controls-row{ 
-    display:flex; 
-    gap:10px; 
-    align-items:center; 
-    flex-wrap:wrap; 
-    margin-top:6px; }
-
-  .toggle{ 
-    display:inline-flex; 
-    background:#fff; 
-    border-radius:10px; 
-    border:1px solid rgba(6,24,44,0.04); 
-    overflow:hidden; }
-
-  .toggle button{ 
-    padding:8px 12px; 
-    border:0; 
-    cursor:pointer; 
-    background:transparent; 
-    font-weight:700; 
-    color:var(--muted); 
-    font-size:13px }
-
-  .toggle button.active{ 
-    background: linear-gradient(180deg,var(--accent-2),var(--accent)); 
-    color:#fff; }
-
-  .info{ 
-    font-size:13px; 
-    color:var(--muted); 
-    background:linear-gradient(180deg,#f8fbff,#f6f9ff); 
-    padding:10px; 
-    border-radius:8px; 
-    border:1px solid rgba(37,99,235,0.04); }
-
-  /* preview */
-  .preview-wrap{ display:flex; flex-direction:column; gap:10px; }
-  textarea#preview{ background-color:#f8fdff; border-color:#e2f0ff; min-height:200px; max-height:60dvh; overflow:hidden; resize:vertical; line-height:1.6; font-family:"Inter", system-ui, sans-serif; box-shadow:var(--shadow-sm); padding:14px; border-radius:10px; white-space:pre-wrap; }
-
-  .controls-bottom{ display:flex; justify-content:space-between; gap:12px; align-items:center; }
-  .rewrite{ background:#bbd5ff; border:1px solid rgba(3, 28, 56, 0.14); padding:8px 12px; border-radius:10px; font-weight:700; color:var(--btn-dark); cursor:pointer; box-shadow:0 8px 22px rgba(15,23,42,0.04); transition: transform .14s; }
-  .rewrite:hover{ transform:translateY(-3px); }
-
-  .send-row{ display:flex; justify-content:center; margin-top:8px; }
-  .send-btn{ position:relative; background:var(--btn-dark); color:#fff; padding:12px 24px; border-radius:12px; border:0; cursor:pointer; font-weight:800; font-size:15px; box-shadow:0 14px 36px rgba(2,6,23,0.12); display:inline-flex; align-items:center; gap:10px; transition: transform .12s, box-shadow .12s; min-width:170px; }
-  .send-btn[disabled]{ opacity:0.7; cursor:default; box-shadow:none; transform:none; }
-  .send-btn.spinner-mode{ width:48px; border-radius:50%; padding:12px; justify-content:center; }
-  .btn-spinner{ width:18px; height:18px; border-radius:50%; border:3px solid rgba(255,255,255,0.22); border-top-color:#fff; animation:spin .7s linear infinite; display:none; }
-  .spinner-mode .btn-spinner{ display:block; }
-  .spinner-mode .btn-text{ opacity:0; }
-  @keyframes spin { to { transform: rotate(360deg) } }
-
-  .note{ text-align:center; color:var(--muted); font-size:13px; margin-top:10px; }
-  footer{ margin-top:18px; text-align:center; color:var(--muted); font-size:13px; }
-
-  .privacy{ color: rgb(133,133,133); font-size:11px; margin-top:6px; text-align:center; }
-
-  /* toast & confetti */
-  .toast{ position:fixed; right:18px; bottom:18px; background:#0b1220; color:#fff; padding:12px 16px; border-radius:10px; box-shadow:var(--shadow-md); opacity:0; transform:translateY(10px); transition:opacity .18s, transform .18s; z-index:15000; font-weight:600; }
-  .toast.show{ opacity:1; transform:none; }
-  .confetti-piece{ position:fixed; width:8px; height:12px; z-index:14000; pointer-events:none; opacity:0.95; border-radius:2px }
-
-  /* small responsiveness tweaks */
-  @media (max-width:480px){
-    .container{ padding:12px; margin:8px auto; }
-    .theme-toggle{ width:40px; height:40px; top:8px; right:8px; }
-    h1{ font-size:1.05rem; }
-    textarea#preview{ font-size:14px; }
+  @media (max-width:420px){
+    .title h1{font-size:1rem;}
+    .card{padding:12px;}
+    .wrap{padding:10px;}
   }
 </style>
 </head>
 <body>
-  <div class="container" role="main" aria-labelledby="main-title">
-    <!-- Theme toggle (upper-right) -->
-    <button id="themeToggle" class="theme-toggle" title="Toggle theme (Light/Dark)" aria-label="Toggle theme">
-      <svg id="themeIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M12 3v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="12" cy="12" r="4" stroke="#0b1220" stroke-width="1.6" />
-      </svg>
-    </button>
+  <div class="wrap">
+    <div class="card" role="main" aria-labelledby="main-title">
+      <header>
+        <div class="title">
+          <h1 id="main-title">Report: Delay in 2nd-Year Result — BA (ODL)</h1>
+          <div class="subtitle">Exams finished on <strong>24 Aug 2025</strong>. Send an individual email to the programme coordinator.</div>
+        </div>
 
-    <header>
-      <div class="title">
-        <h1 id="main-title">Report: Delay in 2nd-Year Result — BA (ODL)</h1>
-        <div class="subtitle">Exams finished on <strong>24 Aug 2025</strong>. Send an individual email to the programme coordinator.</div>
-      </div>
-
-      <div class="meta-row" aria-hidden="true">
-        <div class="badge" id="daysBadge">🗓️ Days since exam: --</div>
-        <div class="badge" id="totalBadge">Total submissions: 0</div>
-      </div>
-    </header>
-
-    <div class="grid" aria-live="polite">
-      <div class="card-panel" aria-label="Form panel">
-        <div class="fields" role="form" aria-describedby="formHint">
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="name">Full Name *</label>
-              <input type="text" id="name" autocomplete="name" placeholder="e.g. Zainab" />
-            </div>
-
-            <div class="form-group">
-              <label for="roll">Roll No *</label>
-              <input type="text" id="roll" placeholder="e.g. D23BA0000" />
-            </div>
-
-            <div class="form-group">
-              <label for="enroll">Enrollment No *</label>
-              <input type="text" id="enroll" placeholder="e.g. 23-123456" />
-            </div>
-
-            <div class="form-group">
-              <label for="contact">Contact Number *</label>
-              <input type="tel" id="contact" placeholder="+91 98xxxxxxx" />
-            </div>
+        <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+          <div style="display:flex;gap:8px;align-items:center">
           </div>
 
-          <div class="controls-row" id="formHint">
-            <div class="toggle" role="tablist" aria-label="Language toggle">
+          <div class="badge" id="daysBadge">🗓️ Days since exam: --</div>
+          <div class="badge" id="totalBadge">Total submissions: 0</div>
+        </div>
+      </header>
+
+      <div class="grid" aria-live="polite">
+        <!-- Form -->
+        <section class="card" aria-label="Form panel" style="padding:12px;">
+          <form id="reportForm" autocomplete="on" onsubmit="return false;">
+            <div class="form-grid">
+              <div>
+                <label for="name">Full Name *</label>
+                <input id="name" name="name" type="text" autocomplete="name" placeholder="e.g. Zainab" required />
+              </div>
+
+              <div>
+                <label for="roll">Roll No *</label>
+                <input id="roll" name="roll" type="text" placeholder="e.g. D23BA0000" required />
+                <div id="rollHint" class="small muted" style="margin-top:6px">Format: Alphanumeric, 5–16 chars (auto uppercased)</div>
+              </div>
+
+              <div>
+                <label for="enroll">Enrollment No *</label>
+                <input id="enroll" name="enroll" type="text" placeholder="e.g. 23-123456" required />
+              </div>
+
+              <div>
+                <label for="contact">Contact Number <span class="small">(recommended)</span></label>
+                <input id="contact" name="contact" type="tel" placeholder="+91 98xxxxxxx" inputmode="tel" />
+              </div>
+            </div>
+
+            <div class="controls" id="formHint" style="margin-top:12px">
+              <div style="flex:1" aria-hidden="true"></div>
+              <div class="muted">Tip: preview appears automatically. Edit it before sending.</div>
+            </div>
+          </form>
+        </section>
+        <!-- Language toggle full button -->
+            <div class="lang-toggle" role="group" aria-label="Choose language">
               <button id="btnEng" class="active" aria-pressed="true">English</button>
               <button id="btnHin" aria-pressed="false">Hinglish</button>
             </div>
 
-            <div style="flex:1"></div>
+        <!-- Preview & actions -->
+        <aside class="card" aria-label="Preview and actions" style="padding:12px;">
+          <label for="preview">Email preview</label>
+          <textarea id="preview" spellcheck="true" aria-label="Email preview">Please enter Full Name, Roll No and Enrollment No to auto-generate a personalised email preview.</textarea>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px">
+            <div style="display:flex;gap:8px;align-items:center">
+              <button id="rewriteBtn" class="btn ghost" title="Get a different wording">↻ Rewrite</button>
+              <div class="small muted">You can edit the preview before sending.</div>
+            </div>
+
+            <div style="display:flex;gap:8px;align-items:center">
+              <div id="charNote" class="muted" style="visibility:hidden">Length: <span id="charCount">0</span></div>
+            </div>
           </div>
 
-          <div style="margin-top:6px;font-size:13px;color:var(--muted)">
-            Tip: Preview opens automatically. Edit the message if needed. Click <strong>Rewrite</strong> for a different wording.
+          <div style="display:flex;justify-content:center;margin-top:12px">
+            <button id="sendBtn" class="btn" aria-live="polite" aria-label="Send My Concern">
+              <span id="btnSpinner" style="display:none" class="spinner" aria-hidden="true"></span>
+              <span id="btnText">Send</span>
+            </button>
           </div>
-        </div>
+
+          <div class="note" id="statusNote">The preview opens automatically as you enter details.</div>
+          <div class="muted" style="text-align:center;margin-top:6px">By sending, minimal metadata (time, roll, contact if provided) will be stored for follow-up.</div>
+        </aside>
       </div>
 
-      <div class="preview-wrap" aria-label="Preview and actions">
-        <textarea id="preview" aria-label="Email preview" spellcheck="true">Please enter Full Name, Roll No and Enrollment No to auto-generate a personalised email preview.</textarea>
-
-        <div class="controls-bottom">
-          <div style="display:flex;gap:8px;align-items:center">
-            <button id="rewriteBtn" class="rewrite" title="Get a different wording">↻ Rewrite</button>
-            <div style="font-size:13px;color:var(--muted)">You can edit the preview before sending.</div>
-          </div>
-
-          <div style="display:flex;gap:8px;align-items:center">
-            <div id="charNote" style="font-size:12px;color:var(--muted);visibility:hidden">Length: <span id="charCount">0</span></div>
-          </div>
-        </div>
-
-        <div class="send-row">
-          <button id="sendBtn" class="send-btn" aria-live="polite" aria-label="Send My Concern">
-            <span class="btn-spinner" aria-hidden="true"></span>
-            <span class="btn-text">Send My Concern</span>
-          </button>
-        </div>
-
-        <div class="note" id="statusNote">The preview opens automatically as you enter details. Edit before sending if needed.</div>
-        <div class="privacy">By sending, you agree minimal metadata (time, roll) will be stored for follow-up.</div>
-      </div>
+      <footer>System for student assistance — use responsibly.</footer>
     </div>
 
-    <footer>System for student assistance — use responsibly.</footer>
+    <!-- toast -->
+    <div id="toast" style="position:fixed;right:18px;bottom:18px;background:#0b1220;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:0 14px 36px rgba(2,6,23,0.12);opacity:0;transform:translateY(10px);transition:opacity .18s,transform .18s;z-index:9999">...</div>
   </div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite"></div>
-
 <script type="module">
-  /* ================= Firebase imports ================= */
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-  import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-  /* ============== FIREBASE CONFIG ============== */
-  const firebaseConfig = {
-    apiKey: "AIzaSyCt0mvu4CbRQBdBJL5wAxijAdEirBUDCDc",
-    authDomain: "justice-for-jmi.firebaseapp.com",
-    projectId: "justice-for-jmi",
-    storageBucket: "justice-for-jmi.firebasestorage.app",
-    messagingSenderId: "17849710989",
-    appId: "1:17849710989:web:0b1dd3c9bb77520d98a5c4"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const COLLECTION_NAME = "resultdelayreport";
-  const submissionsCol = collection(db, COLLECTION_NAME);
-
-  /* ================= DOM refs ================= */
-  const nameEl = document.getElementById('name');
-  const rollEl = document.getElementById('roll');
-  const enrollEl = document.getElementById('enroll');
-  const contactEl = document.getElementById('contact');
-  const previewEl = document.getElementById('preview');
-  const btnEng = document.getElementById('btnEng');
-  const btnHin = document.getElementById('btnHin');
-  const rewriteBtn = document.getElementById('rewriteBtn');
-  const sendBtn = document.getElementById('sendBtn');
-  const daysBadge = document.getElementById('daysBadge');
-  const totalBadge = document.getElementById('totalBadge');
-  const statusNote = document.getElementById('statusNote');
-  const toast = document.getElementById('toast');
-  const charNote = document.getElementById('charNote');
-  const charCount = document.getElementById('charCount');
-  const themeToggle = document.getElementById('themeToggle');
-  const themeIcon = document.getElementById('themeIcon');
-
-  /* ================= Templates (15+15) ================= */
-  const templatesEnglish = [
-  `Respected Sir,
-
-  My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. I completed my second-year examinations on 24 Aug 2025, and since that date I have not received any update about my result.
-
-  The delay has caused uncertainty because I cannot be sure whether I have cleared all subjects or whether I need to prepare for a re-attempt. Kindly inform when the results will be published, so I can plan my academic steps accordingly.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  I am [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. My final second-year paper was on 24 Aug 2025. I have been checking for the result but there is no update yet.
-
-  This lack of clarity affects my preparation for the coming year. Please provide an expected timeline for publication or release the results soon.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  This is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. On 24 Aug 2025 I completed the second-year exams. It has been some time and I still haven't seen the results on the portal.
-
-  If any subject requires re-examination, early notification would help me prepare properly. I kindly request you to announce the results or share a tentative date.
-
-  Thank you,
-  [NAME]`,
-  `Respected Sir,
-
-  My name is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. Our second-year exams ended on 24 Aug 2025 and the result has not been declared so far.
-
-  The delay is creating anxiety as I do not know my academic status. Please release the results at the earliest or inform us of the expected announcement date.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  I am [NAME], Roll No. [ROLL], Enrollment [ENROLL]. I appeared in the second-year exams which concluded on 24 Aug 2025. The result is still pending.
-
-  I request your kind attention to expedite the result declaration or provide a clear timeline so that I can plan my studies.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  This is [NAME], Roll No. [ROLL], Enrollment [ENROLL]. My last exam was on 24 Aug 2025. I am waiting for the result and would appreciate an update.
-
-  A timely result will assist in managing study plans for any possible re-attempts. Please let us know when to expect the declaration.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Since our exams ended on 24 Aug 2025, I have been awaiting the result announcement but there has been no information.
-
-  It would be very helpful if you could share the expected date for result publication so I can prepare accordingly.
-
-  Thank you,
-  [NAME]`,
-  `Respected Sir,
-
-  This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My second-year exams finished on 24 Aug 2025 and I have not received the result yet.
-
-  I humbly request you to share an update or to release the results soon, as clarity is essential for planning.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. The second-year exam cycle ended on 24 Aug 2025 and results are still pending. This delay is concerning.
-
-  Please provide a timeline for declaration so students can prepare for any required re-attempts.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. The exams concluded on 24 Aug 2025, yet the results are not published.
-
-  I respectfully request the results be announced at the earliest or for an update about expected publication date.
-
-  Thank you,
-  [NAME]`,
-  `Respected Sir,
-
-  This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. My 2nd-year exams finished on 24 Aug 2025 and I am still waiting for the results. The delay is affecting my study schedule.
-
-  Kindly look into this and inform us about the expected date of result publication.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. I completed the second-year exams on 24 Aug 2025 and would like to request an update on the result timeline.
-
-  Timely communication will help me plan my next steps if any re-exam is required.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  I am [NAME], Roll No [ROLL], Enrollment [ENROLL]. The exams ended on 24 Aug 2025; results remain unpublished. I request your assistance in announcing the results at the earliest possible date.
-
-  Thank you,
-  [NAME]`,
-  `Respected Sir,
-
-  This is [NAME], Roll No [ROLL], Enrollment [ENROLL]. Since the last paper on 24 Aug 2025 I have been expecting the result. Please provide an update or release the results soon.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  My name is [NAME], Roll No [ROLL], Enrollment [ENROLL]. The second-year exams ended on 24 Aug 2025 and the result is still awaited. I request a quick update on the publication schedule.
-
-  Sincerely,
-  [NAME]`
-  ];
-
-  const templatesHinglish = [
-  `Respected Sir,
-
-  My name is [NAME], Roll No. [ROLL], Enrollment No. [ENROLL]. Hamare second-year exams 24 Aug 2025 ko khatam hue the, lekin abhi tak result announce nahi hua.
-
-  Is delay ki wajah se mujhe pata nahi chal pa raha ke main sab subjects clear hua hoon ya kisi me re-attempt karna padega. Aap se request hai ke please result ka expected date bata dein ya jald se jald declare karein.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL] hoon. 24 Aug 2025 ko hamare second-year exams finish hue the; abhi tak result nahi aaya.
-
-  Result delay se samajh me nahi aa raha hai ke aage kese padhayi karni hai. Sir ya to result announce kar den ya ek tentative date bata dein.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  Mera naam [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare exams complete hue the, par result abhi tak publish nahi hua.
-
-  Agar kisi subject me re-attempt karna pade to uski tayyari ke liye waqt chahiye. Sir please result jaldi se share karein.
-
-  Thank you,
-  [NAME]`,
-  `Respected Sir,
-
-  Mein [NAME], Roll No [ROLL], Enrollment [ENROLL]. Hamare second-year exams 24 Aug 2025 ko khatam hue the aur abhi tak result pending hai. Ye delay mere liye tension ka sabab ban raha hai.
-
-  Please result ko jald declare karein ya ek expected date bata dein.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  Yeh [NAME] hai, Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ka intezaar chal raha hai; abhi tak koi update nahi mili.
-
-  Aap se request hai ke please result ki expected date batayein ya result jald publish karein.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamari second-year papers complete hue the. Abhi tak result nahi aaya aur is se planning mushkil ho rahi hai.
-
-  Aap se request hai ke result jaldi announce karein.
-
-  Thanks,
-  [NAME]`,
-  `Respected Sir,
-
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko exams finish hue the; result abhi pending hai. Agar koi backlog hua to timely update bahut zaruri hai.
-
-  Please inform or publish the result soon.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ka wait chal raha hai; abhi tak koi news nahi. Please is par dhyan dein.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare final papers the aur result abhi tak pending hai. Is delay se time kam pad raha hai back exams ki tayyari ke liye.
-
-  Please announce the results soon.
-
-  Thank you,
-  [NAME]`,
-  `Respected Sir,
-
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. Exams 24 Aug 2025 ko khatam hue the; result abhi tak declare nahi hua. Please result ki update de dein.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result pending hai aur students ko clarity nahi mil rahi. Aap se guzarish hai ke result jaldi share karein.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. Hamare exams 24 Aug 2025 ko khatam hue; ab tak result publish nahi hua. Please provide an expected date.
-
-  Thank you,
-  [NAME]`,
-  `Respected Sir,
-
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad result ka wait chal raha hai; timely update se students ko kaafi madad milegi.
-
-  Kindly share the result or result date.
-
-  Sincerely,
-  [NAME]`,
-  `Respected Sir,
-
-  Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ko hamare exams finish hue the; abhi tak result pending hai. Please inform or publish the result soon.
-
-  Regards,
-  [NAME]`,
-  `Respected Sir,
-
-  Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ki information nahin mili. Aap se request hai ke result jald announce karen.
-
-  Sincerely,
-  [NAME]`
-  ];
-
-  /* ============ Utilities ============ */
-  function daysSinceExam(){
-    // Month index: 7 -> August (0-based months)
-    const examLocal = new Date(2025, 7, 24);
-    const now = new Date();
-    const diff = Math.floor((now - examLocal) / (1000*60*60*24));
-    return diff >= 0 ? diff : 0;
+/* =========================
+  CONFIG / TOGGLE
+  =========================
+  - INCLUDE_PHONE_IN_MAIL (hard-coded):
+      true  -> contact will be included inside the mailto body
+      false -> contact will NOT be added to the mailto body (but will be saved in DB)
+*/
+let INCLUDE_PHONE_IN_MAIL = true; // <- edit here for behavior
+
+/* =========================
+   Firebase (v11 modular) imports
+   =========================
+   Note: You already had Firebase config. Keep these lines if using Firestore.
+   If you don't use Firestore, you can remove those parts and all DB calls (addDoc/onSnapshot/serverTimestamp).
+*/
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp, onSnapshot, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+/* =========================
+   Import templates (separate file, same folder)
+   Make sure templates.js is served alongside index.html
+*/
+import { templatesEnglish, templatesHinglish } from './templates.js';
+
+/* ============== FIREBASE CONFIG ============== */
+const firebaseConfig = {
+  apiKey: "AIzaSyCt0mvu4CbRQBdBJL5wAxijAdEirBUDCDc",
+  authDomain: "justice-for-jmi.firebaseapp.com",
+  projectId: "justice-for-jmi",
+  storageBucket: "justice-for-jmi.firebasestorage.app",
+  messagingSenderId: "17849710989",
+  appId: "1:17849710989:web:0b1dd3c9bb77520d98a5c4"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const COLLECTION_NAME = "resultdelayreport";
+const submissionsCol = collection(db, COLLECTION_NAME);
+
+/* =========================
+   DOM refs & state
+*/
+const nameEl = document.getElementById('name');
+const rollEl = document.getElementById('roll');
+const enrollEl = document.getElementById('enroll');
+const contactEl = document.getElementById('contact');
+const previewEl = document.getElementById('preview');
+const rewriteBtn = document.getElementById('rewriteBtn');
+const sendBtn = document.getElementById('sendBtn');
+const daysBadge = document.getElementById('daysBadge');
+const totalBadge = document.getElementById('totalBadge');
+const statusNote = document.getElementById('statusNote');
+const toastEl = document.getElementById('toast');
+const charNote = document.getElementById('charNote');
+const charCount = document.getElementById('charCount');
+const btnSpinner = document.getElementById('btnSpinner');
+const btnText = document.getElementById('btnText');
+const rollHint = document.getElementById('rollHint');
+
+const btnEng = document.getElementById('btnEng');
+const btnHin = document.getElementById('btnHin');
+
+let currentLang = localStorage.getItem('rd_lang') || 'en';
+let currentIndex = null;
+let userEdited = false;
+let lastSendAt = 0;
+const RATE_LIMIT_MS = 10000;
+const MAILTO_BODY_THRESHOLD = 1900;
+let unsubSnapshot = null;
+
+/* =========================
+   Utilities
+*/
+function daysSinceExam(){
+  const examLocal = new Date(2025,7,24); // Aug 24 2025
+  const now = new Date();
+  const diff = Math.floor((now - examLocal) / (1000*60*60*24));
+  return diff >= 0 ? diff : 0;
+}
+function escapeHtml(str){ return String(str || '').replace(/[&<>"'`=\/]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#47;','`':'&#96;','=':'&#61;'}[s])); }
+function pickIndex(arrLen, prev){ if (!arrLen) return 0; if (arrLen===1) return 0; let idx; do{ idx = Math.floor(Math.random()*arrLen); } while(idx===prev); return idx; }
+function readableTimestamp(){ const now=new Date(); const d=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); const t=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true}); return `${d} — ${t}`; }
+
+/* =========================
+   Init UI
+*/
+function initUI(){
+  // set language UI
+  applyLangUI();
+
+  daysBadge.textContent = `🗓️ Days since exam: ${daysSinceExam()}`;
+  setInterval(()=>{ daysBadge.textContent = `🗓️ Days since exam: ${daysSinceExam()}`; }, 1000*60*60);
+
+  // restore draft
+  const draft = JSON.parse(localStorage.getItem('rd_draft_final') || '{}');
+  if (draft.name) nameEl.value = draft.name;
+  if (draft.roll) rollEl.value = draft.roll;
+  if (draft.enroll) enrollEl.value = draft.enroll;
+  if (draft.contact) contactEl.value = draft.contact;
+
+  // roll hint initial state
+  formatRollInput();
+
+  generatePreviewAuto();
+  setupRealtimeCounter();
+  autoResizePreview();
+  updateCharCount();
+}
+
+/* =========================
+   Language toggle: full button behaviour (persist)
+*/
+function applyLangUI(){
+  if (currentLang === 'hi'){
+    btnHin.classList.add('active'); btnHin.setAttribute('aria-pressed','true');
+    btnEng.classList.remove('active'); btnEng.setAttribute('aria-pressed','false');
+  } else {
+    btnEng.classList.add('active'); btnEng.setAttribute('aria-pressed','true');
+    btnHin.classList.remove('active'); btnHin.setAttribute('aria-pressed','false');
   }
-  function escapeHtml(str){ return String(str || '').replace(/[&<>"'`=\/]/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;','/':'&#47;','`':'&#96;','=':'&#61;'}[s])); }
-  function pickIndex(arrLen, prev){ if (!arrLen) return 0; if (arrLen===1) return 0; let idx; do{ idx = Math.floor(Math.random()*arrLen); } while(idx===prev); return idx; }
-  function readableTimestamp(){ const now=new Date(); const d=now.toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}); const t=now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',hour12:true}); return `${d} — ${t}`; }
+  localStorage.setItem('rd_lang', currentLang);
+}
+// language click handlers
+btnEng.addEventListener('click', ()=>{ if (currentLang === 'en') return; currentLang = 'en'; applyLangUI(); regenerateIfReady(); });
+btnHin.addEventListener('click', ()=>{ if (currentLang === 'hi') return; currentLang = 'hi'; applyLangUI(); regenerateIfReady(); });
 
-  /* ============ State ============ */
-  let currentLang = localStorage.getItem('rd_lang') || 'en';
-  let currentIndex = null;
-  let userEdited = false;
-  let lastSendAt = 0;
-  const RATE_LIMIT_MS = 10000;
-  const MAILTO_BODY_THRESHOLD = 1900;
-  let unsubSnapshot = null;
-
-  /* ============ Init UI ============ */
-  function initUI(){
-    daysBadge.textContent = `🗓️ Days since exam: ${daysSinceExam()}`;
-    setInterval(()=>{ daysBadge.textContent = `🗓️ Days since exam: ${daysSinceExam()}`; }, 1000*60*60);
-
-    // restore draft
-    const draft = JSON.parse(localStorage.getItem('rd_draft_v2') || '{}');
-    if (draft.name) nameEl.value = draft.name;
-    if (draft.roll) rollEl.value = draft.roll;
-    if (draft.enroll) enrollEl.value = draft.enroll;
-    if (draft.contact) contactEl.value = draft.contact;
-    if (draft.lang) currentLang = draft.lang;
-    syncLangUI();
-    generatePreviewAuto();
-    setupRealtimeCounter();
-    setupThemeToggle();
-    autoResizePreview();
-    updateCharCount();
+/* =========================
+   Realtime counter
+*/
+function setupRealtimeCounter(){
+  try {
+    unsubSnapshot = onSnapshot(submissionsCol, snap => {
+      totalBadge.textContent = `Total submissions: ${snap.size}`;
+    }, err => { console.warn('onSnapshot error', err); });
+  } catch(e){
+    console.warn('setupRealtimeCounter error', e);
   }
+  window.addEventListener('beforeunload', ()=>{ try{ if (typeof unsubSnapshot === 'function') unsubSnapshot(); }catch(e){} });
+}
 
-  /* ============ Realtime counter ============ */
-  function setupRealtimeCounter(){
-    try {
-      unsubSnapshot = onSnapshot(submissionsCol, snap => {
-        if (totalBadge) totalBadge.textContent = `Total submissions: ${snap.size}`;
-      }, err => { console.warn('onSnapshot error', err); });
-    } catch(e){
-      console.warn('setupRealtimeCounter error', e);
-    }
-    window.addEventListener('beforeunload', ()=>{ try{ if (typeof unsubSnapshot === 'function') unsubSnapshot(); }catch(e){} });
-  }
+/* =========================
+   Fill templates
+*/
+function fillTemplateByLang(idx, lang, name, roll, enroll){
+  const arr = (lang === 'hi') ? templatesHinglish : templatesEnglish;
+  const safeName = escapeHtml(name || '');
+  const safeRoll = escapeHtml(roll || '');
+  const safeEnroll = escapeHtml(enroll || '');
+  let text = (arr[idx % arr.length] || arr[0])
+    .replaceAll('[NAME]', safeName)
+    .replaceAll('[ROLL]', safeRoll)
+    .replaceAll('[ENROLL]', safeEnroll);
+  return text;
+}
 
-  /* ============ Fill template ============ */
-  function fillTemplateByLang(idx, lang, name, roll, enroll){
-    const arr = (lang === 'hi') ? templatesHinglish : templatesEnglish;
-    const safeName = escapeHtml(name || '');
-    const safeRoll = escapeHtml(roll || '');
-    const safeEnroll = escapeHtml(enroll || '');
-    let text = (arr[idx % arr.length] || arr[0])
-      .replaceAll('[NAME]', safeName)
-      .replaceAll('[ROLL]', safeRoll)
-      .replaceAll('[ENROLL]', safeEnroll);
-    return text;
-  }
-
-  /* ============ Preview auto-generate ============ */
-  let debounceTimer = null;
-  function generatePreviewAuto(){
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(()=>{
-      const name = nameEl.value.trim();
-      const roll = rollEl.value.trim();
-      const enroll = enrollEl.value.trim();
-      const contact = contactEl.value.trim();
-      if (!name || !roll || !enroll){
-        if (!userEdited) { previewEl.value = "Please enter Full Name, Roll No and Enrollment No to auto-generate a personalised email preview."; autoResizePreview(); updateCharCount(); }
-        return;
-      }
-      if (userEdited) { updateCharCount(); return; }
-      const arrLen = (currentLang === 'hi') ? templatesHinglish.length : templatesEnglish.length;
-      currentIndex = pickIndex(arrLen, currentIndex);
-      const base = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
-      // Preview shows contact under signature for user's visual, but we will NOT include contact in mailto later.
-      previewEl.value = contact ? `${base}\nContact: ${escapeHtml(contact)}` : base;
-      updateCharCount();
-      autoResizePreview();
-    }, 200);
-  }
-
-  /* ============ Input binding ============ */
-  [nameEl, rollEl, enrollEl, contactEl].forEach(el=>{
-    el.addEventListener('input', ()=>{ userEdited = false; autosaveDraft(); generatePreviewAuto(); });
-    el.addEventListener('paste', ()=> setTimeout(()=>{ userEdited=false; autosaveDraft(); generatePreviewAuto(); }, 30));
-  });
-
-  previewEl.addEventListener('input', ()=>{ userEdited = true; updateCharCount(); autosaveDraft(); autoResizePreview(); });
-
-  function autosaveDraft(){
-    const draft = { name: nameEl.value.trim(), roll: rollEl.value.trim(), enroll: enrollEl.value.trim(), contact: contactEl.value.trim(), lang: currentLang };
-    try { localStorage.setItem('rd_draft_v2', JSON.stringify(draft)); } catch(e){}
-  }
-
-  function updateCharCount(){
-    const len = previewEl.value ? previewEl.value.length : 0;
-    charCount.textContent = len;
-    if (len > MAILTO_BODY_THRESHOLD) { charNote.style.visibility = 'visible'; charNote.textContent = `Length: ${len} (long — clipboard fallback)`; } else { charNote.style.visibility = 'hidden'; }
-  }
-
-  /* ============ Language toggles ============ */
-  btnEng.addEventListener('click', ()=>{ currentLang='en'; localStorage.setItem('rd_lang','en'); syncLangUI(); regenerateIfReady(); });
-  btnHin.addEventListener('click', ()=>{ currentLang='hi'; localStorage.setItem('rd_lang','hi'); syncLangUI(); regenerateIfReady(); });
-  function syncLangUI(){ if (currentLang==='hi'){ btnHin.classList.add('active'); btnHin.setAttribute('aria-pressed','true'); btnEng.classList.remove('active'); btnEng.setAttribute('aria-pressed','false'); } else { btnEng.classList.add('active'); btnEng.setAttribute('aria-pressed','true'); btnHin.classList.remove('active'); btnHin.setAttribute('aria-pressed','false'); } }
-  function regenerateIfReady(){ const n=nameEl.value.trim(), r=rollEl.value.trim(), e=enrollEl.value.trim(), c=contactEl.value.trim(); if (n&&r&&e){ currentIndex = pickIndex((currentLang==='hi')?templatesHinglish.length:templatesEnglish.length, currentIndex); const base = fillTemplateByLang(currentIndex,currentLang,n,r,e); previewEl.value = c ? `${base}\nContact: ${escapeHtml(c)}` : base; userEdited=false; autosaveDraft(); updateCharCount(); autoResizePreview(); } }
-
-  /* ============ Rewrite ============ */
-  rewriteBtn.addEventListener('click', ()=>{
-    const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim(), contact = contactEl.value.trim();
-    if (!name||!roll||!enroll){ alert('Please fill Full Name, Roll No and Enrollment No first.'); return; }
-    const arrLen = (currentLang==='hi')?templatesHinglish.length:templatesEnglish.length;
-    currentIndex = pickIndex(arrLen, currentIndex);
-    previewEl.style.opacity = '0.35';
-    setTimeout(()=>{ const base = fillTemplateByLang(currentIndex,currentLang,name,roll,enroll); previewEl.value = contact ? `${base}\nContact: ${escapeHtml(contact)}` : base; previewEl.style.opacity='1'; userEdited=false; autosaveDraft(); updateCharCount(); autoResizePreview(); }, 140);
-  });
-
-  /* ============ Validation (contact mandatory) ============ */
-  function validateForm(){
+/* =========================
+   Smart auto-generate preview
+*/
+let debounceTimer = null;
+function generatePreviewAuto(){
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(()=>{
     const name = nameEl.value.trim();
     const roll = rollEl.value.trim();
     const enroll = enrollEl.value.trim();
     const contact = contactEl.value.trim();
-    if (name.length < 2 || name.length > 60) return { ok:false, msg:'Name must be between 2 and 60 characters.' };
-    const rollClean = roll.replace(/\s+/g,'');
-    if (!/^[A-Za-z0-9\-]{5,16}$/.test(rollClean)) return { ok:false, msg:'Roll No should be 5–16 characters, alphanumeric (hyphen allowed). Example: D23BA0000' };
-    const enrollClean = enroll.replace(/\s+/g,'');
-    if (enrollClean.length < 4 || enrollClean.length > 16 || !/^[0-9\-A-Za-z]+$/.test(enrollClean)) return { ok:false, msg:'Enrollment No seems invalid. Example: 23-123456' };
-    if (!contact) return { ok:false, msg:'Contact number is required. Please provide a valid phone number.' };
+    if (!name || !roll || !enroll){
+      if (!userEdited) { previewEl.value = "Please enter Full Name, Roll No and Enrollment No to auto-generate a personalised email preview."; autoResizePreview(); updateCharCount(); }
+      return;
+    }
+    if (userEdited) { updateCharCount(); return; }
+    const arrLen = (currentLang === 'hi') ? templatesHinglish.length : templatesEnglish.length;
+    currentIndex = pickIndex(arrLen, currentIndex);
+    const base = fillTemplateByLang(currentIndex, currentLang, name, roll, enroll);
+    previewEl.value = contact ? `${base}\nContact: ${escapeHtml(contact)}` : base;
+    updateCharCount();
+    autoResizePreview();
+  }, 180);
+}
+
+/* =========================
+   Bind inputs & autosave
+*/
+[nameEl, rollEl, enrollEl, contactEl].forEach(el=>{
+  el.addEventListener('input', ()=>{ userEdited=false; autosaveDraft(); if (el===rollEl) formatRollInput(); generatePreviewAuto(); });
+  el.addEventListener('paste', ()=> setTimeout(()=>{ userEdited=false; autosaveDraft(); if (el===rollEl) formatRollInput(); generatePreviewAuto(); }, 30));
+});
+previewEl.addEventListener('input', ()=>{ userEdited=true; updateCharCount(); autosaveDraft(); autoResizePreview(); });
+
+function autosaveDraft(){
+  const draft = { name:nameEl.value.trim(), roll:rollEl.value.trim(), enroll:enrollEl.value.trim(), contact:contactEl.value.trim(), lang: currentLang };
+  try{ localStorage.setItem('rd_draft_final', JSON.stringify(draft)); } catch(e){}
+}
+function updateCharCount(){ const len = previewEl.value ? previewEl.value.length : 0; charCount.textContent = len; if (len > MAILTO_BODY_THRESHOLD){ charNote.style.visibility='visible'; charNote.textContent = `Length: ${len} (long — clipboard fallback)`; } else { charNote.style.visibility='hidden'; } }
+
+/* =========================
+   Roll formatting + hint
+*/
+function formatRollInput(){
+  let v = rollEl.value || '';
+  v = v.toUpperCase().replace(/\s+/g,'');
+  rollEl.value = v;
+  const clean = v.replace(/\s+/g,'');
+  if (!/^[A-Z0-9\-]{5,16}$/.test(clean)){
+    rollHint.textContent = 'Roll looks unusual. Use 5–16 alphanumeric characters (hyphen allowed).';
+    rollHint.style.color = 'var(--danger)';
+  } else {
+    rollHint.textContent = 'Format: Alphanumeric, 5–16 chars (auto uppercased)';
+    rollHint.style.color = 'var(--muted)';
+  }
+}
+
+/* =========================
+   Rewrite button
+*/
+rewriteBtn.addEventListener('click', ()=>{
+  const name = nameEl.value.trim(), roll = rollEl.value.trim(), enroll = enrollEl.value.trim(), contact = contactEl.value.trim();
+  if (!name||!roll||!enroll){ alert('Please fill Full Name, Roll No and Enrollment No first.'); return; }
+  const arrLen = (currentLang==='hi')?templatesHinglish.length:templatesEnglish.length;
+  currentIndex = pickIndex(arrLen, currentIndex);
+  previewEl.style.opacity = '0.35';
+  setTimeout(()=>{ const base = fillTemplateByLang(currentIndex,currentLang,name,roll,enroll); previewEl.value = contact ? `${base}\nContact: ${escapeHtml(contact)}` : base; previewEl.style.opacity='1'; userEdited=false; autosaveDraft(); updateCharCount(); autoResizePreview(); }, 140);
+});
+
+/* =========================
+   Validation (contact optional)
+*/
+function validateForm(){
+  const name = nameEl.value.trim();
+  const roll = rollEl.value.trim();
+  const enroll = enrollEl.value.trim();
+  const contact = contactEl.value.trim();
+  if (name.length < 2 || name.length > 60) return { ok:false, msg:'Name must be between 2 and 60 characters.' };
+  const rollClean = roll.replace(/\s+/g,'');
+  if (!/^[A-Za-z0-9\-]{5,16}$/.test(rollClean)) return { ok:false, msg:'Roll No should be 5–16 characters, alphanumeric (hyphen allowed). Example: D23BA0000' };
+  const enrollClean = enroll.replace(/\s+/g,'');
+  if (enrollClean.length < 4 || enrollClean.length > 32) return { ok:false, msg:'Enrollment No seems invalid. Example: 23-123456' };
+  if (contact){
     const ph = contact.replace(/[ \-()]/g,'');
     if (!/^\+?[0-9]{7,15}$/.test(ph)) return { ok:false, msg:'Contact number appears invalid. Use digits, optionally +, 7–15 digits.' };
-    return { ok:true };
   }
+  return { ok:true };
+}
 
-  /* ============ Send flow (contact shown in preview but NOT in mailto) ============ */
-  async function handleSend(){
-    const now = Date.now();
-    if (now - lastSendAt < RATE_LIMIT_MS){ showToast('Please wait a moment before sending again.'); return; }
-    const v = validateForm();
-    if (!v.ok){ alert(v.msg); return; }
+/* =========================
+   Send flow (uses INCLUDE_PHONE_IN_MAIL)
+*/
+async function handleSend(){
+  const now = Date.now();
+  if (now - lastSendAt < RATE_LIMIT_MS){ showToast('Please wait a moment before sending again.'); return; }
+  const v = validateForm();
+  if (!v.ok){ alert(v.msg); return; }
 
-    const name = nameEl.value.trim();
-    const roll = rollEl.value.trim();
-    const enroll = enrollEl.value.trim();
-    const contact = contactEl.value.trim();
+  const name = nameEl.value.trim();
+  const roll = rollEl.value.trim();
+  const enroll = enrollEl.value.trim();
+  const contact = contactEl.value.trim();
 
-    // baseBody = the actual mail body we will open in user's mail app (WITHOUT contact)
-    const baseBody = (previewEl.value && previewEl.value.trim().length>0)
-      ? (() => {
-          // preview may include "Contact: ..." — remove any trailing "Contact:" line for mailto
-          const txt = previewEl.value.trim();
-          const lines = txt.split(/\r?\n/);
-          // remove last line if it starts with "Contact:"
-          if (lines.length > 0 && /^Contact:/i.test(lines[lines.length-1].trim())) {
-            lines.pop();
-          }
-          return lines.join('\n').trim();
-        })()
-      : fillTemplateByLang(currentIndex ?? 0, currentLang, name, roll, enroll);
+  // Build mail body from preview but control contact inclusion
+  let previewText = previewEl.value && previewEl.value.trim().length>0 ? previewEl.value.trim() : fillTemplateByLang(currentIndex ?? 0, currentLang, name, roll, enroll);
+  const lines = previewText.split(/\r?\n/);
+  if (/^Contact:/i.test(lines[lines.length-1].trim())) lines.pop();
+  const baseBody = lines.join('\n').trim();
 
-    // fullBody contains the contact too — to be saved in Firestore and shown in preview
-    const fullBody = `${baseBody}\nContact: ${contact}`;
+  const mailBody = (INCLUDE_PHONE_IN_MAIL && contact) ? `${baseBody}\nContact: ${contact}` : baseBody;
+  const savedBody = contact ? `${baseBody}\nContact: ${contact}` : baseBody;
 
-    enterSpinnerMode();
-    statusNote.textContent = 'Saving your submission...';
+  enterSpinner();
+  statusNote.textContent = 'Saving your submission...';
 
-    const docData = {
-      name,
-      roll,
-      enrollment: enroll,
-      contact: contact || null,
-      language: currentLang === 'hi' ? 'hinglish' : 'english',
-      templateIndex: currentIndex ?? 0,
-      mailBody: fullBody, // store the version INCLUDING contact
-      readableTime: readableTimestamp(),
-      ts: serverTimestamp()
-    };
+  const docData = {
+    name,
+    roll,
+    enrollment: enroll,
+    contact: contact || null,
+    language: currentLang === 'hi' ? 'hinglish' : 'english',
+    templateIndex: currentIndex ?? 0,
+    mailBody: savedBody,
+    readableTime: readableTimestamp(),
+    ts: serverTimestamp()
+  };
 
-    try {
-      // Save to Firestore (includes contact)
-      await addDoc(submissionsCol, docData);
-      statusNote.textContent = 'Saved. Preparing your mail...';
+  try {
+    await addDoc(submissionsCol, docData);
+    statusNote.textContent = 'Saved. Preparing your mail...';
 
-      // Prepare mailto WITHOUT contact (baseBody)
-      const to = 'g.mgaffar@jmi.ac.in';
-      const bcc = 'mrizvi@jmi.ac.in';
-      const subject = 'Regarding Delay in Declaration of BA ODL 2nd-Year Results';
-      const subjectEnc = encodeURIComponent(subject);
-      const bodyEnc = encodeURIComponent(baseBody);
-      const mailto = `mailto:${encodeURIComponent(to)}?bcc=${encodeURIComponent(bcc)}&subject=${subjectEnc}&body=${bodyEnc}`;
+    const to = 'g.mgaffar@jmi.ac.in';
+    const bcc = 'mrizvi@jmi.ac.in';
+    const subject = 'Regarding Delay in Declaration of BA ODL 2nd-Year Results';
+    const subjectEnc = encodeURIComponent(subject);
+    const bodyEnc = encodeURIComponent(mailBody);
+    const mailto = `mailto:${encodeURIComponent(to)}?bcc=${encodeURIComponent(bcc)}&subject=${subjectEnc}&body=${bodyEnc}`;
 
-      // small delay for UX
-      await new Promise(r => setTimeout(r, 520));
+    // small UX delay
+    await new Promise(r=>setTimeout(r,420));
 
-      if (bodyEnc.length > MAILTO_BODY_THRESHOLD){
-        // If too long, copy baseBody to clipboard and open a short mail to aid user
-        try {
-          await navigator.clipboard.writeText(baseBody);
-          const shortBody = encodeURIComponent('Dear Sir,\n\nI have prepared a message and copied it to my clipboard. Please paste it into the email body and send.\n\nRegards,\n');
-          const mailtoShort = `mailto:${encodeURIComponent(to)}?bcc=${encodeURIComponent(bcc)}&subject=${subjectEnc}&body=${shortBody}`;
-          window.location.href = mailtoShort;
-          showToast('Message copied to clipboard. Mail window opened — paste & send.');
-        } catch (copyErr){
-          console.warn('clipboard failed', copyErr);
-          // fallback: open mailto (might truncate body)
-          window.location.href = mailto;
-          showToast('Mail window opened. If body missing, paste message manually.');
-        }
-      } else {
-        // Normal, open mail with baseBody (WITHOUT contact)
+    if (bodyEnc.length > MAILTO_BODY_THRESHOLD){
+      // long -> copy to clipboard and open short mail window
+      try {
+        await navigator.clipboard.writeText(mailBody);
+        const shortBody = encodeURIComponent('Dear Sir,\n\nI have prepared a message and copied it to my clipboard. Please paste it into the email body and send.\n\nRegards,\n');
+        const mailtoShort = `mailto:${encodeURIComponent(to)}?bcc=${encodeURIComponent(bcc)}&subject=${subjectEnc}&body=${shortBody}`;
+        window.location.href = mailtoShort;
+        showToast('Message copied to clipboard. Mail window opened — paste & send.');
+      } catch (copyErr){
+        console.warn('clipboard failed', copyErr);
         window.location.href = mailto;
-        showToast('Mail window opened. Please send the message from your mail app.');
+        showToast('Mail window opened. If body missing, paste message manually.');
       }
-
-      lastSendAt = Date.now();
-      setTimeout(()=>{ triggerConfetti(); showToast('Saved & mail window opened.'); }, 300);
-    } catch (err){
-      console.error('Save error', err);
-      alert('There was an error saving your submission. Please try again.');
-      showToast('Save failed. Try again.');
-    } finally {
-      exitSpinnerMode();
-      statusNote.textContent = 'If your mail app did not open, allow pop-ups or try again.';
-    }
-  }
-
-  /* ============ Spinner helpers ============ */
-  function enterSpinnerMode(){ sendBtn.setAttribute('disabled','true'); sendBtn.classList.add('spinner-mode'); const text = sendBtn.querySelector('.btn-text'); if (text) text.textContent = 'Sending…'; }
-  function exitSpinnerMode(){ sendBtn.removeAttribute('disabled'); sendBtn.classList.remove('spinner-mode'); const text = sendBtn.querySelector('.btn-text'); if (text) text.textContent = 'Send My Concern'; }
-
-  /* ============ Toast & Confetti ============ */
-  let toastTimer = null;
-  function showToast(msg, timeout=3600){ toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ toast.classList.remove('show'); }, timeout); }
-
-  function triggerConfetti(){
-    const colors = ['#60a5fa','#ffd166','#06d6a0','#ff7ab6','#b388eb'];
-    const count = 12;
-    for (let i=0;i<count;i++){
-      const el = document.createElement('div'); el.className='confetti-piece';
-      const w = 6 + Math.random()*8; const h = 10 + Math.random()*12;
-      el.style.width = w+'px'; el.style.height = h+'px';
-      el.style.left = (window.innerWidth/2 - 30 + (Math.random()*160 - 80)) + 'px';
-      el.style.top = (window.innerHeight/2 - 30 + (Math.random()*60 - 30)) + 'px';
-      el.style.background = colors[Math.floor(Math.random()*colors.length)];
-      document.body.appendChild(el);
-      const angle = (Math.random()*160 - 80);
-      const vx = Math.cos(angle*Math.PI/180) * (4 + Math.random()*6);
-      const vy = - (6 + Math.random()*10);
-      el.animate([{ transform:`translateY(0px) rotate(${Math.random()*360}deg)`, opacity:1 }, { transform:`translate(${vx*80}px, ${vy*80 + 200}px) rotate(${Math.random()*720}deg)`, opacity:0 }], { duration:1200 + Math.random()*600, easing:'cubic-bezier(.2,.8,.2,1)' });
-      setTimeout(()=> el.remove(), 2200 + Math.random()*400);
-    }
-  }
-
-  /* ============ Theme toggle ============ */
-  function setupThemeToggle(){
-    const pref = localStorage.getItem('rd_dark_mode'); // 'on' or 'off'
-    if (pref === 'on') { document.documentElement.setAttribute('data-theme','dark'); setThemeIcon('dark'); }
-    else { document.documentElement.removeAttribute('data-theme'); setThemeIcon('light'); }
-    themeToggle.addEventListener('click', ()=>{
-      const isDark = document.documentElement.hasAttribute('data-theme');
-      if (isDark){ document.documentElement.removeAttribute('data-theme'); localStorage.setItem('rd_dark_mode','off'); setThemeIcon('light'); showToast('Light mode'); }
-      else { document.documentElement.setAttribute('data-theme','dark'); localStorage.setItem('rd_dark_mode','on'); setThemeIcon('dark'); showToast('Dark mode'); }
-    });
-  }
-  function setThemeIcon(mode){
-    if (!themeIcon) return;
-    if (mode === 'dark'){
-      themeIcon.innerHTML = '<path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" fill="#fff"/>';
     } else {
-      themeIcon.innerHTML = '<path d="M12 3v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="#0b1220" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="4" stroke="#0b1220" stroke-width="1.6" />';
+      // open mail normally
+      window.location.href = mailto;
+      showToast('Mail window opened. Please send the message from your mail app.');
     }
+
+    lastSendAt = Date.now();
+    setTimeout(()=>{ smallSuccess(); showToast('Saved & mail window opened.'); }, 300);
+  } catch (err) {
+    console.error('Save error', err);
+    alert('There was an error saving your submission. Please try again.');
+    showToast('Save failed. Try again.');
+  } finally {
+    exitSpinner();
+    statusNote.textContent = 'If your mail app did not open, allow pop-ups or try again.';
   }
+}
 
-  /* ============ Auto-resize preview ============ */
-  function autoResizePreview(){ previewEl.style.height = 'auto'; const maxH = Math.min(window.innerHeight * 0.6, 1200); previewEl.style.height = Math.min(previewEl.scrollHeight + 8, maxH) + 'px'; }
-  previewEl.addEventListener('input', autoResizePreview); window.addEventListener('resize', autoResizePreview);
+/* =========================
+   Spinner & small success
+*/
+function enterSpinner(){ sendBtn.setAttribute('disabled','true'); btnSpinner.style.display='inline-block'; btnText.style.opacity='0'; }
+function exitSpinner(){ sendBtn.removeAttribute('disabled'); btnSpinner.style.display='none'; btnText.style.opacity='1'; }
+let toastTimer = null;
+function showToast(msg, timeout=3000){ toastEl.textContent = msg; toastEl.style.opacity='1'; toastEl.style.transform='none'; clearTimeout(toastTimer); toastTimer = setTimeout(()=>{ toastEl.style.opacity='0'; toastEl.style.transform='translateY(10px)'; }, timeout); }
+function smallSuccess(){ const c = document.querySelector('.card'); c.classList.add('success-pop'); setTimeout(()=>c.classList.remove('success-pop'), 360); }
 
-  /* ============ Accessibility: Ctrl+Enter send ============ */
-  previewEl.addEventListener('keydown', (e)=>{ if (e.ctrlKey && e.key === 'Enter') { e.preventDefault(); handleSend(); } });
+/* =========================
+   Auto resize preview + accessibility
+*/
+function autoResizePreview(){ previewEl.style.height = 'auto'; const maxH = Math.min(window.innerHeight * 0.6, 1200); previewEl.style.height = Math.min(previewEl.scrollHeight + 8, maxH) + 'px'; }
+previewEl.addEventListener('input', autoResizePreview); window.addEventListener('resize', autoResizePreview);
+// Ctrl+Enter to send
+previewEl.addEventListener('keydown', (e)=>{ if (e.ctrlKey && e.key === 'Enter'){ e.preventDefault(); handleSend(); } });
 
-  /* ============ Init & bindings ============ */
-  document.addEventListener('DOMContentLoaded', initUI);
-  sendBtn.addEventListener('click', handleSend);
+/* =========================
+   Regenerate if ready (language change)
+*/
+function regenerateIfReady(){
+  const n = nameEl.value.trim(), r = rollEl.value.trim(), e = enrollEl.value.trim(), c = contactEl.value.trim();
+  if (n && r && e){
+    currentIndex = pickIndex((currentLang==='hi')?templatesHinglish.length:templatesEnglish.length, currentIndex);
+    const base = fillTemplateByLang(currentIndex, currentLang, n, r, e);
+    previewEl.value = c ? `${base}\nContact: ${escapeHtml(c)}` : base;
+    userEdited = false; autosaveDraft(); updateCharCount(); autoResizePreview();
+  }
+}
 
-  /* ============ Cleanup on unload ============ */
-  window.addEventListener('unload', ()=>{ try{ if (typeof unsubSnapshot === 'function') unsubSnapshot(); } catch(e){} });
+/* =========================
+   Optional: backend-controlled toggle (Fetch flag from Firestore)
+   - If you prefer controlling INCLUDE_PHONE_IN_MAIL from Firestore, uncomment below and create doc at:
+     collection: 'config'  doc: 'emailSettings'  fields: { includePhoneInMail: true/false }
+*/
+async function fetchIncludePhoneFlagFromFirestore(){
+  try {
+    const cfgRef = doc(db, 'config', 'emailSettings');
+    const snap = await getDoc(cfgRef);
+    if (snap.exists()){
+      const data = snap.data();
+      if (typeof data.includePhoneInMail === 'boolean'){
+        INCLUDE_PHONE_IN_MAIL = data.includePhoneInMail;
+      }
+    }
+  } catch(err){
+    console.warn('Could not fetch includePhoneInMail from Firestore', err);
+  }
+}
+
+/* =========================
+   Event bindings & init
+*/
+document.addEventListener('DOMContentLoaded', initUI);
+sendBtn.addEventListener('click', handleSend);
 
 </script>
 </body>

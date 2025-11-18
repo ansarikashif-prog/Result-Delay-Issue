@@ -162,7 +162,7 @@ Regards,
 
 Mera naam [NAME], Roll No [ROLL], Enrollment [ENROLL]. Hamare second-year exams 24 Aug 2025 ko khatam hue the; result abhi tak pending hai.
 
-Please inform soon.
+Please inform soon. Because hame nahi pata kis subject me back ayegi and uski preparation bhi karni hai next year ke liye.
 
 Thanks,
 [NAME]`,
@@ -209,7 +209,8 @@ Thanks,
 [NAME]`,
 `Respected Sir,
 
-Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ki koi jankari nahi mili. Kripya bata dein.
+Main [NAME], Roll No [ROLL], Enrollment [ENROLL]. 24 Aug 2025 ke baad se result ki koi jankari nahi mili. 
+Please sir Ya to Result Announce karein ya Expected Date bata dein.
 
 Sincerely,
 [NAME]`,
